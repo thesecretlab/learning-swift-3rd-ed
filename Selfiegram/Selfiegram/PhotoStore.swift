@@ -10,25 +10,38 @@ import Foundation
 import UIKit
 import CoreLocation
 
-struct Photo : Codable {
+class Photo : Codable {
     
+    // Stores latitude and longitude in a Codable form.
+    // (Basically, this is done because CLLocation isn't codable.)
     struct Coordinate: Codable {
         var latitude: Double
         var longitude: Double
+        
+        init (location : CLLocation) {
+            self.latitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
+        }
+        
+        var location : CLLocation {
+            return CLLocation(latitude: self.latitude, longitude: self.longitude)
+        }
     }
     
+    // The name of this photo
     var title : String = "New image"
+    
+    // When it was created.
     var created : Date = Date()
     
+    // The coordinates for where the photo was taken. Optional.
     var position : Coordinate?
     
-    var id : String
+    // A unique ID, used to link this photo to its image on disk.
+    var id : String = UUID().uuidString
     
     init(title: String) {
         self.title = title
-        
-        // Generate a UUID to use as our ID
-        id = UUID().uuidString
     }
     
     
@@ -128,7 +141,7 @@ class PhotoStore {
     }
     
     // Returns a list of Photo objects loaded from disk.
-    func listImages() throws -> [Photo] {
+    func listPhotos() throws -> [Photo] {
         
         //do {
             

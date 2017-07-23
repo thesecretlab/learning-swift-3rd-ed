@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import Selfiegram
+import CoreLocation
 
 // Needed for UILabel and UIGraphicsBegin/EndImageContext
 import UIKit
@@ -38,6 +39,68 @@ class PhotoStoreTests: XCTestCase {
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
     
+    // A class for handling location updates
+    class LocationManagerDelegate : NSObject, CLLocationManagerDelegate {
+        
+        typealias LocationHandler = (CLLocation) -> Void
+        
+        var locationHandler : LocationHandler?
+        
+        func locationManager(_ manager: CLLocationManager,
+                             didUpdateLocations locations: [CLLocation]) {
+            
+            // Get the location (the most recent one is at the end of the 'locations' list
+            guard let currentLocation = locations.last else {
+                return
+            }
+            
+            // Call the location handler if we have one
+            locationHandler?(currentLocation)
+        }
+    }
+    
+    func testCreatingImagesWithLocation() {
+        
+        let manager = CLLocationManager()
+        let delegate = LocationManagerDelegate()
+        
+        manager.delegate = delegate
+        
+        switch CLLocationManager.authorizationStatus() {
+        case .restricted:
+            // If the user isn't allowed to turn it on...
+            fallthrough
+        case .denied:
+            // ...or if the user has explicitly turned if off,
+            // then we can't run this test
+            XCTFail("Location services are not available.")
+            return
+        case .notDetermined:
+            // We don't know if we have permission. Ask for it.
+            manager.requestWhenInUseAuthorization()
+        default:
+            break
+        }
+        
+        let newPhoto = Photo(title: "Photo with location")
+        
+        let expectation = XCTestExpectation(description: "Waiting for location to appear")
+        
+        delegate.locationHandler = { (location : CLLocation) in
+            
+            newPhoto.position = Photo.Coordinate(location: location)
+            expectation.fulfill()
+        }
+        
+        manager.startUpdatingLocation()
+        
+        self.wait(for: [expectation], timeout: 5.0)
+        
+        XCTAssertNotNil(newPhoto.position)
+        
+        try! PhotoStore.shared.save(image: newPhoto)
+    }
+    
     func testCreatingImages() {
         
         // Arrange
@@ -47,7 +110,7 @@ class PhotoStoreTests: XCTestCase {
         try! PhotoStore.shared.save(image: newImage)
         
         // Assert
-        let allImages = try! PhotoStore.shared.listImages()
+        let allImages = try! PhotoStore.shared.listPhotos()
         
         guard let theImage = allImages.first(where: {$0.id == newImage.id }) else {
             XCTFail("The list of images should contain the one we just created.")
@@ -59,7 +122,7 @@ class PhotoStoreTests: XCTestCase {
     
     func testSavingImages() {
         // Arrange
-        var newImage = Photo(title: "test image")
+        let newImage = Photo(title: "test image")
         
         // Act
         newImage.image = createImage(text: "😀")
