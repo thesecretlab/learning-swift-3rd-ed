@@ -39,11 +39,14 @@ class PhotoStoreTests: XCTestCase {
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
     
-    // A class for handling location updates
+    // A helper class for handling location updates,
+    // used in 'testCreatingImagesWithLocation'
     class LocationManagerDelegate : NSObject, CLLocationManagerDelegate {
         
+        // A convenience typealias to save us some potential confusion
         typealias LocationHandler = (CLLocation) -> Void
         
+        // The (optional) code to run when we've received a location
         var locationHandler : LocationHandler?
         
         func locationManager(_ manager: CLLocationManager,
@@ -59,13 +62,16 @@ class PhotoStoreTests: XCTestCase {
         }
     }
     
+    // Tests getting the location from the location system, and saving
+    // an image that contains it.
     func testCreatingImagesWithLocation() {
         
+        // Arrange
+        
+        // The location manager is how we ask for location data
         let manager = CLLocationManager()
-        let delegate = LocationManagerDelegate()
         
-        manager.delegate = delegate
-        
+        // Do we have permission to get the location?
         switch CLLocationManager.authorizationStatus() {
         case .restricted:
             // If the user isn't allowed to turn it on...
@@ -77,27 +83,50 @@ class PhotoStoreTests: XCTestCase {
             return
         case .notDetermined:
             // We don't know if we have permission. Ask for it.
+            // The location won't be delivered until the user makes a decision,
+            // so it's safe to carry on and call 'manager.requestLocation' in the meantime.
             manager.requestWhenInUseAuthorization()
         default:
+            // We have permission.
             break
         }
         
+        // Create a new photo to store.
         let newPhoto = Photo(title: "Photo with location")
         
+        // Create an expectation; the test will not complete until
+        // the expectation is fulfilled or broken.
         let expectation = XCTestExpectation(description: "Waiting for location to appear")
         
+        // Create a LocationManagerDelegate so we can be told about the location,
+        // and use it in this test
+        let delegate = LocationManagerDelegate()
+        manager.delegate = delegate
+        
+        // Tell the delegate what to do when we get a location
         delegate.locationHandler = { (location : CLLocation) in
             
+            // We have a location store it in the photo.
             newPhoto.position = Photo.Coordinate(location: location)
+            
+            // Mark the expectation as fulfilled, so that the test can continue.
             expectation.fulfill()
         }
         
-        manager.startUpdatingLocation()
+        // Act
         
+        // Request a one-time delivery of the location from the manager.
+        manager.requestLocation()
+        
+        // Pause the test, and wait up to 5 seconds for the expectation to be fulfilled.
         self.wait(for: [expectation], timeout: 5.0)
         
+        // Assert
+        
+        // We should now have position data in the photo.
         XCTAssertNotNil(newPhoto.position)
         
+        // Ensure that it can be saved.
         try! PhotoStore.shared.save(image: newPhoto)
     }
     

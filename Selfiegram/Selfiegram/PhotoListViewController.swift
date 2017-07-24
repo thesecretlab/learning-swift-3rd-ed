@@ -215,8 +215,10 @@ class PhotoListViewController: UITableViewController {
         // Store the image
         newPhoto.image = image
         
-        // We may have 
-        // Store the location if we have one
+        // We may have a location stored in 'lastLocation', as a result
+        // of the action taken in locationManager(_, didUpdateLocations:).
+        
+        // Store the location if we have it.
         if let location = self.lastLocation {
             newPhoto.position = Photo.Coordinate(location: location)
         }
