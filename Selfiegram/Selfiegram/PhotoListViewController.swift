@@ -77,7 +77,7 @@ class PhotoListViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let object = photos[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! PhotoDetailViewController
-                controller.detailItem = object
+                controller.photo = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -90,17 +90,23 @@ class PhotoListViewController: UITableViewController {
         return 1
     }
 
+    // There are as many rows in the table view as there are photos in the array
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
     }
 
+    // Called to prepare a cell for use.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Get a cell from the table view
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let object = photos[indexPath.row]
-        cell.textLabel!.text = object.title
-        cell.imageView!.image = object.image
+        // Get a photo, and use it to configure the cell
+        let photo = photos[indexPath.row]
+        cell.textLabel!.text = photo.title
+        cell.imageView!.image = photo.image
         
+        // Return the cell to the table view for use
         return cell
     }
 
@@ -109,19 +115,26 @@ class PhotoListViewController: UITableViewController {
         return true
     }
     
+    // Called when the user performs an edit action, like deleting a row.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // If this was a deletion, we have deleting to do
         if editingStyle == .delete {
             
+            // Get the object from the content array
             let photoToRemove = photos[indexPath.row]
             
+            // Remove it from that array
             photos.remove(at: indexPath.row)
             
+            // Attempt to delete the photo
             do {
-                try PhotoStore.shared.delete(image: photoToRemove)
+                try PhotoStore.shared.delete(photo: photoToRemove)
             } catch {
                 showError(message: "Failed to delete the image.")
             }
             
+            // Remove the entry from the table view
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -139,17 +152,22 @@ class PhotoListViewController: UITableViewController {
     @objc func createNewPhoto() {
         
         // Create a new image picker
-        let sourceType : UIImagePickerControllerSourceType
+        let imagePicker = UIImagePickerController()
         
+        // If a camera is available, use that; otherwise, use the photo library
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            sourceType = .camera
+            imagePicker.sourceType = .camera
+            
+            // If the front-facing camera is available, use that
+            if UIImagePickerController.isCameraDeviceAvailable(.front) {
+                imagePicker.cameraDevice = .front
+            }
         } else {
-            sourceType = .photoLibrary
+            imagePicker.sourceType = .photoLibrary
         }
         
-        let imagePicker = UIImagePickerController()
+        // We want this object to be notified when the user takes a photo
         imagePicker.delegate = self
-        imagePicker.sourceType = sourceType
         
         // Present the image picker
         self.present(imagePicker, animated: true, completion: nil)
@@ -159,7 +177,8 @@ class PhotoListViewController: UITableViewController {
         lastLocation = nil
         
         // Does the user want us to try to get the location?
-        let shouldTryGettingLocation = UserDefaults.standard.bool(forKey: SettingsKeys.setLocation.rawValue)
+        let shouldTryGettingLocation = UserDefaults
+            .standard.bool(forKey: SettingsKeys.setLocation.rawValue)
         
         if shouldTryGettingLocation {
             // Prepare to ask for location info
@@ -178,6 +197,7 @@ class PhotoListViewController: UITableViewController {
                 break
             }
             
+            // We want to be notified when we get the location
             locationManager.delegate = self
             
             // Request a one-time location update.
@@ -195,6 +215,7 @@ class PhotoListViewController: UITableViewController {
         // Store the image
         newPhoto.image = image
         
+        // We may have 
         // Store the location if we have one
         if let location = self.lastLocation {
             newPhoto.position = Photo.Coordinate(location: location)
@@ -254,11 +275,20 @@ extension PhotoListViewController : UIImagePickerControllerDelegate, UINavigatio
 // reported by the CLLocationManager
 
 extension PhotoListViewController : CLLocationManagerDelegate {
+    
+    // Called when we get a location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        // The most recent location is at the end of the array, so store that.
         lastLocation = locations.last
     }
+    
+    // Called when we fail to get the location.
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         NSLog("Failed to get the location: \(error)")
+        
+        // Store nil in lastLocation, so that we're sure to not accidentally
+        // store an incorrect location in a photo
         lastLocation = nil
     }
 }

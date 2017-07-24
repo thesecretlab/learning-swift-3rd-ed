@@ -36,16 +36,13 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yex-xb-2kG">
                                 <rect key="frame" x="20" y="153" width="280" height="395"/>
                             </imageView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="mutedStandard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcN-ps-U1P">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="mutedStandard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcN-ps-U1P">
                                 <rect key="frame" x="233" y="78" width="67" height="67"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="67" id="wNS-aM-GoJ"/>
                                     <constraint firstAttribute="height" constant="67" id="xxS-wX-uLx"/>
                                 </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="TZg-QH-CIs" appends="YES" id="sfk-0X-kVQ"/>
-                                </connections>
                             </mapView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Image Name" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XgJ-fw-6bv">
                                 <rect key="frame" x="20" y="78" width="205" height="19"/>
@@ -90,39 +87,8 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="TZg-QH-CIs">
-                    <connections>
-                        <segue destination="mRx-UC-u9W" kind="show" id="l3e-9D-oFI"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="706.875" y="127.8169014084507"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="LRH-sX-Sir">
-            <objects>
-                <viewController id="mRx-UC-u9W" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" id="eDE-jK-v3B">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ERM-dz-Xfw">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </mapView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ERM-dz-Xfw" firstAttribute="top" secondItem="eDE-jK-v3B" secondAttribute="top" id="Mai-wi-BAR"/>
-                            <constraint firstItem="ERM-dz-Xfw" firstAttribute="leading" secondItem="gsh-gn-4TZ" secondAttribute="leading" id="QFx-23-cjo"/>
-                            <constraint firstItem="ERM-dz-Xfw" firstAttribute="trailing" secondItem="gsh-gn-4TZ" secondAttribute="trailing" id="h1e-Ge-E94"/>
-                            <constraint firstItem="ERM-dz-Xfw" firstAttribute="bottom" secondItem="gsh-gn-4TZ" secondAttribute="bottom" id="nRM-5m-kT8"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="gsh-gn-4TZ"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vvm-Nv-M4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1486.875" y="127.8169014084507"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
@@ -228,6 +194,36 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="hgM-hi-zOn">
+                                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hgM-hi-zOn" id="ZyG-YB-zT2">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Remind Me at 10 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XvE-fN-1NE">
+                                                    <rect key="frame" x="16" y="0.0" width="231" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcm-yB-hqW">
+                                                    <rect key="frame" x="255" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="reminderSwitchUpdated:" destination="zB3-LD-n3G" eventType="valueChanged" id="fam-RN-eu6"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="pcm-yB-hqW" secondAttribute="trailing" constant="16" id="CNd-nG-Jwt"/>
+                                                <constraint firstItem="pcm-yB-hqW" firstAttribute="leading" secondItem="XvE-fN-1NE" secondAttribute="trailing" constant="8" id="RY6-TJ-JzF"/>
+                                                <constraint firstAttribute="bottom" secondItem="XvE-fN-1NE" secondAttribute="bottom" constant="0.5" id="dA1-73-Rav"/>
+                                                <constraint firstItem="pcm-yB-hqW" firstAttribute="centerY" secondItem="XvE-fN-1NE" secondAttribute="centerY" id="ghx-0C-zoh"/>
+                                                <constraint firstItem="XvE-fN-1NE" firstAttribute="top" secondItem="ZyG-YB-zT2" secondAttribute="top" id="hC8-lz-nwT"/>
+                                                <constraint firstItem="XvE-fN-1NE" firstAttribute="leading" secondItem="ZyG-YB-zT2" secondAttribute="leading" constant="16" id="lPi-T2-dXh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -237,6 +233,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="reminderSwitch" destination="pcm-yB-hqW" id="LiI-6X-JBS"/>
                         <outlet property="setLocationSwitch" destination="yOO-it-0DV" id="H0N-G9-DKf"/>
                     </connections>
                 </tableViewController>

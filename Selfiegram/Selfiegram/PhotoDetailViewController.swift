@@ -11,13 +11,23 @@ import CoreLocation
 import MapKit
 
 class PhotoDetailViewController: UIViewController {
-
+    
+    // The image view, which shows the photo
     @IBOutlet weak var imageView: UIImageView!
+    
+    // The text field, which shows the image name and
+    // also allows editing
     @IBOutlet weak var imageName: UITextField!
+    
+    // The label that shows the time and date it was created
     @IBOutlet weak var dateCreatedLabel: UILabel!
     
+    // The map view, which shows the location of the photo (if one exists)
     @IBOutlet weak var mapView: MKMapView!
     
+    // The date formatter used to format the time and date of the photo
+    // It's created in a closure like this so that when it's used, it's
+    // already configured the way we need it
     let dateFormatter = { () -> DateFormatter in
         let d = DateFormatter()
         d.dateStyle = .short
@@ -29,7 +39,7 @@ class PhotoDetailViewController: UIViewController {
         // Update the user interface for the detail item.
         
         // Ensure that we have the photo
-        guard let detail = detailItem else {
+        guard let detail = photo else {
             return
         }
         
@@ -41,11 +51,12 @@ class PhotoDetailViewController: UIViewController {
             return
         }
         
+        // Update the label and image view
         imageName.text = detail.title
         imageView.image = detail.image
         
+        // Format the date into a string and display it
         let dateText = dateFormatter.string(from: detail.created)
-        
         dateCreatedLabel.text = dateText
         
         // If the photo has a location, then center the map on it
@@ -55,10 +66,10 @@ class PhotoDetailViewController: UIViewController {
             
             mapView.setCenter(coordinates, animated: false)
             
+            // Show the map because we have a location
             mapView.isHidden = false
         } else {
             // If it doesn't have a location, don't show the map at all
-            
             mapView.isHidden = true
         }
     
@@ -71,32 +82,33 @@ class PhotoDetailViewController: UIViewController {
         configureView()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
-    var detailItem: Photo? {
+    var photo: Photo? {
         didSet {
             // Update the view.
             configureView()
         }
     }
 
+    // Called when the user taps the Done button on the keyboard while
+    // editing the imageName field.
     @IBAction func doneButtonTapped(_ sender: Any) {
         
-        guard let detail = detailItem else {
+        // Ensure that we have a Photo to work with
+        guard let photo = photo else {
             return
         }
         
+        // Ensure that we have text in the field
         guard let text = imageName?.text else {
             return
         }
         
-        detail.title = text
+        // Update the Photo and save it
+        photo.title = text
         
         do {
-            try PhotoStore.shared.save(image: detail)
+            try PhotoStore.shared.save(image: photo)
         } catch let error {
             NSLog("Failed to save! \(error)")
         }

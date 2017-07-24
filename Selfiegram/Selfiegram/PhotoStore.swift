@@ -74,7 +74,8 @@ class PhotoStore {
         
         return FileManager
             .default
-            .urls(for: .documentDirectory, in: .allDomainsMask)
+            .urls(for: .documentDirectory,
+                  in: .allDomainsMask)
             .first!
     }
     
@@ -143,68 +144,43 @@ class PhotoStore {
     // Returns a list of Photo objects loaded from disk.
     func listPhotos() throws -> [Photo] {
         
-        //do {
-            
-            // Get the list of files in the documents directory
-            let contents = try FileManager
-                .default
-                .contentsOfDirectory(at: self.documentsFolder,
-                                     includingPropertiesForKeys: nil)
-                                     
-            // Get all files whose path extension is 'json',
-            // load them as data, and decode them from JSON
-            // into
-            return try contents
-                .filter { $0.pathExtension == "json" }
-                .map { try Data(contentsOf: $0) }
-                .map { try JSONDecoder().decode(Photo.self, from: $0) }
-            
-        /* } catch let error {
-            // Catch any error, display the problem to
-            // the user, and return the empty list
-            
-            // Prepare an error message
-            let message = "Error loading images: " +
-                "\(error.localizedDescription)"
-            
-            // Prepare an alert controller to show this message
-            let alert = UIAlertController(title: "Error",
-                                          message: message,
-                                          preferredStyle: .alert)
-            
-            // Add an action so that the user can dismiss it
-            alert.addAction(UIAlertAction(title: "OK",
-                                          style: .default,
-                                          handler: nil))
-            
-            // Try to get the root view controller so we can present it
-            if let vc = UIApplication.shared.keyWindow?.rootViewController {
-                
-                // Actually present it
-                vc.present(alert, animated: true, completion: nil)
-            }
-            
-            // Because there was a problem, return the empty list
-            return []
-        }*/
+        // Get the list of files in the documents directory
+        let contents = try FileManager
+            .default
+            .contentsOfDirectory(at: self.documentsFolder,
+                                 includingPropertiesForKeys: nil)
+        
+        // Get all files whose path extension is 'json',
+        // load them as data, and decode them from JSON
+        // into
+        return try contents
+            .filter { $0.pathExtension == "json" }
+            .map { try Data(contentsOf: $0) }
+            .map { try JSONDecoder().decode(Photo.self, from: $0) }
+        
+        
         
     }
     
-    func delete(image : Photo) throws {
-        try delete(imageID: image.id)
+    // Deletes a photo, and its corresponding image, from disk.
+    // This function simply takes the ID from the Photo you pass in,
+    // and gives it to the other version of the delete function.
+    func delete(photo : Photo) throws {
+        try delete(imageID: photo.id)
     }
     
-    func delete(imageID : String) throws {
+    // Deletes a photo, and its corresponding image, from disk.
+    func delete(photoID : String) throws {
         
-        let imageFileName = "\(imageID)-image.jpg"
-        let dataFileName = "\(imageID).json"
+        let photoDataFileName = "\(photoID).json"
+        let imageFileName = "\(photoID)-image.jpg"
         
-        let dataURL = self.documentsFolder.appendingPathComponent(dataFileName)
+        let photoDataURL = self.documentsFolder.appendingPathComponent(photoDataFileName)
         let imageURL = self.documentsFolder.appendingPathComponent(imageFileName)
         
         // Remove the two files if they exist
-        if FileManager.default.fileExists(atPath: dataURL.path) {
-            try FileManager.default.removeItem(at: dataURL)
+        if FileManager.default.fileExists(atPath: photoDataURL.path) {
+            try FileManager.default.removeItem(at: photoDataURL)
         }
         
         if FileManager.default.fileExists(atPath: imageURL.path) {
@@ -213,14 +189,15 @@ class PhotoStore {
         
     }
     
+    // Attempts to save a photo, and its image, to disk.
     func save(image : Photo) throws {
         
-        let imageData = try JSONEncoder().encode(image)
+        let photoData = try JSONEncoder().encode(image)
         
         let fileName = "\(image.id).json"
         let destinationURL = self.documentsFolder.appendingPathComponent(fileName)
         
-        try imageData.write(to: destinationURL)
+        try photoData.write(to: destinationURL)
     }
     
     func load(imageID : String) -> Photo? {
@@ -233,8 +210,8 @@ class PhotoStore {
         // and then return it.
         // Return nil if any of these steps fail.
         if let data = try? Data(contentsOf: dataURL),
-            let image = try? JSONDecoder().decode(Photo.self, from: data) {
-            return image
+            let photo = try? JSONDecoder().decode(Photo.self, from: data) {
+            return photo
         } else {
             return nil
         }
