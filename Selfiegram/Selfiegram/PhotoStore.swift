@@ -189,19 +189,19 @@ class PhotoStore {
         
     }
     
-    // Attempts to save a photo, and its image, to disk.
-    func save(image : Photo) throws {
+    // Attempts to save a photo to disk.
+    func save(photo : Photo) throws {
         
-        let photoData = try JSONEncoder().encode(image)
+        let photoData = try JSONEncoder().encode(photo)
         
-        let fileName = "\(image.id).json"
+        let fileName = "\(photo.id).json"
         let destinationURL = self.documentsFolder.appendingPathComponent(fileName)
         
         try photoData.write(to: destinationURL)
     }
     
-    func load(imageID : String) -> Photo? {
-        let dataFileName = "\(imageID).json"
+    func load(photoID : String) -> Photo? {
+        let dataFileName = "\(photoID).json"
         
         let dataURL = self.documentsFolder.appendingPathComponent(dataFileName)
         

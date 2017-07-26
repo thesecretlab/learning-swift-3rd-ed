@@ -127,7 +127,7 @@ class PhotoStoreTests: XCTestCase {
         XCTAssertNotNil(newPhoto.position)
         
         // Ensure that it can be saved.
-        try! PhotoStore.shared.save(image: newPhoto)
+        try! PhotoStore.shared.save(photo: newPhoto)
     }
     
     func testCreatingImages() {
@@ -136,12 +136,12 @@ class PhotoStoreTests: XCTestCase {
         let newImage = Photo(title: "test image")
         
         // Act
-        try! PhotoStore.shared.save(image: newImage)
+        try! PhotoStore.shared.save(photo: newImage)
         
         // Assert
-        let allImages = try! PhotoStore.shared.listPhotos()
+        let allPhotos = try! PhotoStore.shared.listPhotos()
         
-        guard let theImage = allImages.first(where: {$0.id == newImage.id }) else {
+        guard let theImage = allPhotos.first(where: {$0.id == newImage.id }) else {
             XCTFail("The list of images should contain the one we just created.")
             return
         }
@@ -169,11 +169,11 @@ class PhotoStoreTests: XCTestCase {
         
         // Arrange
         let newImage = Photo(title: "test image")
-        try! PhotoStore.shared.save(image: newImage)
+        try! PhotoStore.shared.save(photo: newImage)
         let id = newImage.id
         
         // Act
-        let loadedImage = PhotoStore.shared.load(imageID: id)
+        let loadedImage = PhotoStore.shared.load(photoID: id)
         
         // Assert
         XCTAssertNotNil(loadedImage, "The image should be loaded")

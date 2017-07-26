@@ -25,6 +25,13 @@ class PhotoDetailViewController: UIViewController {
     // The map view, which shows the location of the photo (if one exists)
     @IBOutlet weak var mapView: MKMapView!
     
+    // The photo we're showing.
+    var photo: Photo? {
+        didSet {
+            // Update the view.
+            configureView()
+        }
+    }
     
     // The date formatter used to format the time and date of the photo
     // It's created in a closure like this so that when it's used, it's
@@ -40,28 +47,28 @@ class PhotoDetailViewController: UIViewController {
         // Update the user interface for the detail item.
         
         // Ensure that we have the photo
-        guard let detail = photo else {
+        guard let photo = photo else {
             return
         }
         
         // Ensure that we have references to the controls we need
         guard let imageName = imageName,
-            let imageView = imageView,
-            let dateCreatedLabel = dateCreatedLabel,
-            let mapView = mapView else {
+              let imageView = imageView,
+              let dateCreatedLabel = dateCreatedLabel,
+              let mapView = mapView else {
             return
         }
         
         // Update the label and image view
-        imageName.text = detail.title
-        imageView.image = detail.image
+        imageName.text = photo.title
+        imageView.image = photo.image
         
         // Format the date into a string and display it
-        let dateText = dateFormatter.string(from: detail.created)
+        let dateText = dateFormatter.string(from: photo.created)
         dateCreatedLabel.text = dateText
         
         // If the photo has a location, then center the map on it
-        if let position = detail.position {
+        if let position = photo.position {
             
             let coordinates = CLLocationCoordinate2D(latitude: position.latitude, longitude: position.longitude)
             
@@ -84,12 +91,6 @@ class PhotoDetailViewController: UIViewController {
     }
 
 
-    var photo: Photo? {
-        didSet {
-            // Update the view.
-            configureView()
-        }
-    }
 
     // Called when the user taps the Done button on the keyboard while
     // editing the imageName field.
@@ -109,7 +110,7 @@ class PhotoDetailViewController: UIViewController {
         photo.title = text
         
         do {
-            try PhotoStore.shared.save(image: photo)
+            try PhotoStore.shared.save(photo: photo)
         } catch let error {
             NSLog("Failed to save! \(error)")
         }

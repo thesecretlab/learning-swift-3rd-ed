@@ -255,7 +255,7 @@ class PhotoListViewController: UITableViewController {
         
         // Attempt to save the photo
         do {
-            try PhotoStore.shared.save(image: newPhoto)
+            try PhotoStore.shared.save(photo: newPhoto)
         } catch let error {
             showError(message: "Can't save photo: \(error)")
         }

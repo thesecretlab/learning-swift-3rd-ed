@@ -102,9 +102,11 @@ class SettingsTableViewController: UITableViewController {
                                                 trigger: trigger)
             
             // Add it to the notification center
-            current.add(request, withCompletionHandler: nil)
+            current.add(request, withCompletionHandler: { (error) in
+                self.updateNotificationsSwitch()
+            })
             
-            self.updateNotificationsSwitch()
+            
         }
         
         
