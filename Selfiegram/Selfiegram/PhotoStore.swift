@@ -166,7 +166,7 @@ class PhotoStore {
     // This function simply takes the ID from the Photo you pass in,
     // and gives it to the other version of the delete function.
     func delete(photo : Photo) throws {
-        try delete(imageID: photo.id)
+        try delete(photoID: photo.id)
     }
     
     // Deletes a photo, and its corresponding image, from disk.
