@@ -72,12 +72,13 @@ class PhotoListViewController: UITableViewController {
 
     // MARK: - Segues
 
+    // Called when we tap on a row. The PhotoDetailViewController is given the photo.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = photos[indexPath.row]
+                let photo = photos[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! PhotoDetailViewController
-                controller.photo = object
+                controller.photo = photo
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -86,6 +87,7 @@ class PhotoListViewController: UITableViewController {
 
     // MARK: - Table View
 
+    // This table view has a single section
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -141,10 +143,15 @@ class PhotoListViewController: UITableViewController {
     
     // Displays an error dialog box
     func showError(message: String) {
+        // Create an alert controller, with the message we received
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        // Add an action to it - it won't do anything, but
+        // doing this means that it will have a button to dismiss it
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(action)
         
+        // Show the alert and its message
         self.present(alert, animated: true, completion: nil)
     }
     
