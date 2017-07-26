@@ -25,6 +25,7 @@ class PhotoDetailViewController: UIViewController {
     // The map view, which shows the location of the photo (if one exists)
     @IBOutlet weak var mapView: MKMapView!
     
+    
     // The date formatter used to format the time and date of the photo
     // It's created in a closure like this so that when it's used, it's
     // already configured the way we need it
@@ -112,9 +113,6 @@ class PhotoDetailViewController: UIViewController {
         } catch let error {
             NSLog("Failed to save! \(error)")
         }
-        
-        
     }
-    
 }
 

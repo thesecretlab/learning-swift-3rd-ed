@@ -12,12 +12,22 @@ import CoreLocation
 class PhotoListViewController: UITableViewController {
 
     var detailViewController: PhotoDetailViewController? = nil
+    
+    // The list of Photo objects we're displaying
     var photos : [Photo] = []
     
     // The last location that we saw from the location system
     var lastLocation : CLLocation?
     
     let locationManager = CLLocationManager()
+    
+    // The formatter for creating the "1 minute ago"-style label
+    let timeIntervalFormatter : DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .spellOut
+        formatter.maximumUnitCount = 1
+        return formatter
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,13 +57,15 @@ class PhotoListViewController: UITableViewController {
         // And make these items appear in the left of the bar
         navigationItem.leftBarButtonItems = leftBarContent
         
-        
-
+        // Create the add button and put it in the right hand side of the bar
         let addButton = UIBarButtonItem(barButtonSystemItem: .add,
                                         target: self,
                                         action: #selector(createNewPhoto))
         
         navigationItem.rightBarButtonItem = addButton
+        
+        // If we're in a split view controller, keep a reference to the detail view
+        // controller that's shown in the other pane
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? PhotoDetailViewController
@@ -105,7 +117,18 @@ class PhotoListViewController: UITableViewController {
 
         // Get a photo, and use it to configure the cell
         let photo = photos[indexPath.row]
+        
+        // Set up its main label
         cell.textLabel!.text = photo.title
+        
+        // Set up its time ago label
+        if let interval = timeIntervalFormatter.string(from: photo.created, to: Date()) {
+            cell.detailTextLabel!.text = "\(interval) ago"
+        } else {
+            cell.detailTextLabel!.text = nil
+        }
+        
+        
         cell.imageView!.image = photo.image
         
         // Return the cell to the table view for use
