@@ -63,6 +63,11 @@ enum SelfieStoreError : Error
 }
 // END selfie_error
 
+// BEGIN selfie_store_class
+final class SelfieStore
+{
+}
+// END selfie_store_class
 
 
 
