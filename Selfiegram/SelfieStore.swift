@@ -55,3 +55,22 @@ class Selfie : Codable
     // END model_selfie_init
 }
 // END model_selfie_class_initial
+
+// BEGIN selfie_error
+enum SelfieStoreError : Error
+{
+    case cannotSaveImage(UIImage?)
+}
+// END selfie_error
+
+
+
+
+
+
+
+
+
+
+
+
