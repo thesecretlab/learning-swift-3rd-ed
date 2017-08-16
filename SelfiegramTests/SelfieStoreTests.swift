@@ -67,4 +67,20 @@ class SelfieStoreTests: XCTestCase {
         XCTAssertEqual(selfieTitle, newSelfie.title)
     }
     // END test_creation
+    // BEGIN test_image_save
+    func testSavingImage() throws
+    {
+        // Arrange
+        let newSelfie = Selfie(title: "Selfie with image test")
+        
+        // Act
+        newSelfie.image = createImage(text: "💯")
+        try SelfieStore.shared.save(selfie: newSelfie)
+        
+        // Assert
+        let loadedImage = SelfieStore.shared.getImage(id: newSelfie.id)
+        
+        XCTAssertNotNil(loadedImage,"The image should be loaded.")
+    }
+    // END test_image_save
 }
