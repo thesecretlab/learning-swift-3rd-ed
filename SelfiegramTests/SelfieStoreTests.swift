@@ -83,4 +83,26 @@ class SelfieStoreTests: XCTestCase {
         XCTAssertNotNil(loadedImage,"The image should be loaded.")
     }
     // END test_image_save
+    // BEGIN test_load_selfie
+    func testLoadingSelfie() throws
+    {
+        // Arrange
+        let selfieTitle = "Test loading selfie"
+        let newSelfie = Selfie(title: selfieTitle)
+        try SelfieStore.shared.save(selfie: newSelfie)
+        let id = newSelfie.id
+        
+        // Act
+        let loadedSelfie = SelfieStore.shared.load(id: id)
+        
+        // Assert
+        XCTAssertNotNil(loadedSelfie, "The selfie should be loaded")
+        XCTAssertEqual(loadedSelfie?.id, newSelfie.id,
+                       "The loaded selfie should have the same ID")
+        XCTAssertEqual(loadedSelfie?.created, newSelfie.created,
+                       "The loaded selfie should have the same creation date")
+        XCTAssertEqual(loadedSelfie?.title, selfieTitle,
+                       "The loaded selfie should have the same title")
+    }
+    // END test_load_selfie
 }
