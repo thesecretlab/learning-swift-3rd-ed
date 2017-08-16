@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		330991B51F4406A1005EF027 /* SelfieStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330991B41F4406A1005EF027 /* SelfieStoreTests.swift */; };
 		3326CDD11F414F800084FDB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD01F414F800084FDB3 /* AppDelegate.swift */; };
 		3326CDD31F414F800084FDB3 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD21F414F800084FDB3 /* MasterViewController.swift */; };
 		3326CDD51F414F800084FDB3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD41F414F800084FDB3 /* DetailViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		330991B41F4406A1005EF027 /* SelfieStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieStoreTests.swift; sourceTree = "<group>"; };
 		3326CDCD1F414F800084FDB3 /* Selfiegram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Selfiegram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3326CDD01F414F800084FDB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3326CDD21F414F800084FDB3 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		3326CDE61F414F800084FDB3 /* SelfiegramTests */ = {
 			isa = PBXGroup;
 			children = (
+				330991B41F4406A1005EF027 /* SelfieStoreTests.swift */,
 				3326CDE71F414F800084FDB3 /* SelfiegramTests.swift */,
 				3326CDE91F414F800084FDB3 /* Info.plist */,
 			);
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3326CDE81F414F800084FDB3 /* SelfiegramTests.swift in Sources */,
+				330991B51F4406A1005EF027 /* SelfieStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
