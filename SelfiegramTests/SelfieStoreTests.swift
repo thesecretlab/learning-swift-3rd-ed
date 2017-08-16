@@ -105,4 +105,25 @@ class SelfieStoreTests: XCTestCase {
                        "The loaded selfie should have the same title")
     }
     // END test_load_selfie
+    // BEGIN test_delete_selfie
+    func testDeletingSelfie() throws
+    {
+        // Arrange
+        let newSelfie = Selfie(title: "Test deleting a selfie")
+        try SelfieStore.shared.save(selfie: newSelfie)
+        let id = newSelfie.id
+        
+        // Act
+        let allSelfies = try SelfieStore.shared.listSelfies()
+        try SelfieStore.shared.delete(id: id)
+        let selfieList = try SelfieStore.shared.listSelfies()
+        let loadedSelfie = SelfieStore.shared.load(id: id)
+        
+        // Assert
+        XCTAssertEqual(allSelfies.count - 1, selfieList.count,
+                       "There should be one less selfie after deletion")
+        XCTAssertNil(loadedSelfie, "deleted selfie should be nil")
+        
+    }
+    // END test_delete_selfie
 }
