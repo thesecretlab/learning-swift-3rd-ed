@@ -70,23 +70,90 @@ final class SelfieStore
     static let shared = SelfieStore()
     // END shared_property
     
-    // BEGIN method_stubs
+    // BEGIN imageCache_property
+    private var imageCache : [UUID:UIImage] = [:]
+    // END imageCache_property
+    
+    // BEGIN documents_property
+    var documentsFolder : URL
+    {
+        return FileManager.default.urls(for: .documentDirectory,
+                                        in: .allDomainsMask).first!
+    }
+    // END documents_property
+    
+    // BEGIN store_get_image
     /// Gets an image by ID. Will be cached in memory for future lookups.
     /// - parameter id: the id of the selfie who's image you are after
     /// - returns: the image for that selfie or nil if it doesn't exist
     func getImage(id:UUID) -> UIImage?
     {
-        return nil
+        // If this image is already in the cache, return it
+        if let image = imageCache[id]
+        {
+            return image
+        }
+        
+        // Figure out where this image should live
+        let imageURL = documentsFolder.appendingPathComponent("\(id.uuidString)-image.jpg")
+        
+        // Get the data from this file; exit if we fail
+        guard let imageData = try? Data(contentsOf: imageURL) else
+        {
+            return nil
+        }
+        
+        // Get the image from this data; exit if we fail
+        guard let image = UIImage(data: imageData) else
+        {
+            return nil
+        }
+        
+        // Store the loaded image in the cache for next time
+        imageCache[id] = image
+        
+        // Return the loaded image
+        return image
     }
+    // END store_get_image
     
+    // BEGIN store_set_image
     /// Saves an image to disk.
     /// - parameter id: the id of the selfie you want this image associated with
     /// - parameter image: the image you want saved
     /// - Throws: `SelfieStoreObject` if it fails to save to disk
     func setImage(id:UUID, image : UIImage?) throws
     {
-        throw SelfieStoreError.cannotSaveImage(image)
+        // Figure out where the file would end up
+        let fileName = "\(id.uuidString)-image.jpg"
+        let destinationURL =
+            self.documentsFolder.appendingPathComponent(fileName)
+        
+        if let image = image
+        {
+            // We have an image to work with, so save it out
+            // Attempt to convert the image into JPEG data
+            guard let data = UIImageJPEGRepresentation(image, 0.9) else
+            {
+                // Throw an error if this failed
+                throw SelfieStoreError.cannotSaveImage(image)
+            }
+            
+            // Attempt to write the data out
+            try data.write(to: destinationURL)
+        }
+        else
+        {
+            // The image is nil, indicating that we want to remove the image.
+            // Attempt to perform the deletion.
+            try FileManager.default.removeItem(at: destinationURL)
+        }
+        
+        // Cache this image in memory. (If image is nil, this has the effect of
+        // removing the entry from the cache dictionary.)
+        imageCache[id] = image
     }
+    // END store_set_image
     
     /// Returns a list of Selfie objects loaded from disk.
     /// - returns: an array of all selfies previously saved
@@ -129,17 +196,5 @@ final class SelfieStore
     {
         throw SelfieStoreError.cannotSaveImage(nil)
     }
-    // END method_stubs
 }
 // END selfie_store_class
-
-
-
-
-
-
-
-
-
-
-
