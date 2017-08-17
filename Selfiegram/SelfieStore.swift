@@ -155,14 +155,26 @@ final class SelfieStore
     }
     // END store_set_image
     
+    // BEGIN store_list
     /// Returns a list of Selfie objects loaded from disk.
     /// - returns: an array of all selfies previously saved
     /// - Throws: `SelfieStoreError` if it fails to load a selfie correctly from disk
     func listSelfies() throws -> [Selfie]
     {
-        return []
+        // Get the list of files in the documents directory
+        let contents = try FileManager.default
+            .contentsOfDirectory(at: self.documentsFolder,
+         includingPropertiesForKeys: nil)
+        
+        // Get all files whose path extension is 'json',
+        // load them as data, and decode them from JSON
+        return try contents.filter { $0.pathExtension == "json" }
+            .map { try Data(contentsOf: $0) }
+            .map { try JSONDecoder().decode(Selfie.self, from: $0) }
     }
+    // END store_list
     
+    // BEGIN store_delete_selfie
     /// Deletes a selfie, and its corresponding image, from disk.
     /// This function simply takes the ID from the Selfie you pass in,
     /// and gives it to the other version of the delete function.
@@ -170,7 +182,7 @@ final class SelfieStore
     /// - Throws: `SelfieStoreError` if it fails to delete the selfie from disk
     func delete(selfie: Selfie) throws
     {
-        throw SelfieStoreError.cannotSaveImage(nil)
+        try delete(id: selfie.id)
     }
     
     /// Deletes a selfie, and its corresponding image, from disk.
@@ -178,8 +190,27 @@ final class SelfieStore
     /// - Throws: `SelfieStoreError` if it fails to delete the selfie from the disk
     func delete(id: UUID) throws
     {
-        throw SelfieStoreError.cannotSaveImage(nil)
+        let selfieDataFileName = "\(id.uuidString).json"
+        let imageFileName = "\(id.uuidString)-image.jpg"
+        
+        let selfieDataURL = self.documentsFolder.appendingPathComponent(selfieDataFileName)
+        let imageURL = self.documentsFolder.appendingPathComponent(imageFileName)
+        
+        // Remove the two files if they exist
+        if FileManager.default.fileExists(atPath: selfieDataURL.path)
+        {
+            try FileManager.default.removeItem(at: selfieDataURL)
+        }
+        
+        if FileManager.default.fileExists(atPath: imageURL.path)
+        {
+            try FileManager.default.removeItem(at: imageURL)
+        }
+        
+        // wiping the image from the cache if its there
+        imageCache[id] = nil
     }
+    // END store_delete_selfie
     
     /// Attempts to load a selfie from disk.
     /// - parameter id: the id property of the Selfie object you want loaded from disk
