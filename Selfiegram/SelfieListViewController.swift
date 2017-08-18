@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  SelfieListViewController.swift
 //  Selfiegram
 //
 //  Created by Tim Nugent on 14/8/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class SelfieListViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
