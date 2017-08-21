@@ -95,7 +95,6 @@ class SelfieListViewController: UITableViewController {
                             numberOfRowsInSection section: Int) -> Int {
         return selfies.count
     }
-    // BEGIN selfie_cell_visuals
     override func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -125,7 +124,42 @@ class SelfieListViewController: UITableViewController {
         
         return cell
     }
-    // END selfie_cell_visuals
+    // BEGIN selfie_list_canEditRowAt
+    override func tableView(_ tableView: UITableView,
+                            canEditRowAt indexPath: IndexPath) -> Bool
+    {
+        return true
+    }
+    // END selfie_list_canEditRowAt
+    // BEGIN selfie_list_commitEditingStyle
+    override func tableView(_ tableView: UITableView,
+                            commit editingStyle: UITableViewCellEditingStyle,
+                            forRowAt indexPath: IndexPath) {
+        // If this was a deletion, we have deleting to do
+        if editingStyle == .delete
+        {
+            // Get the object from the content array
+            let selfieToRemove = selfies[indexPath.row]
+            
+            // Attempt to delete the selfie
+            do
+            {
+                try SelfieStore.shared.delete(selfie: selfieToRemove)
+                
+                // Remove it from that array
+                selfies.remove(at: indexPath.row)
+                
+                // Remove the entry from the table view
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            catch
+            {
+                showError(message: "Failed to delete \(selfieToRemove.title).")
+            }
+        }
+    }
+    // END selfie_list_commitEditingStyle
+    
     // END selfie_list_tableview
 }
 
