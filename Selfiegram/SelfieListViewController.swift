@@ -32,6 +32,13 @@ class SelfieListViewController: UITableViewController {
     {
         super.viewDidLoad()
         
+        // BEGIN selfie_list_add_button
+        let addSelfieButton = UIBarButtonItem(barButtonSystemItem: .add,
+                                              target: self,
+                                              action: #selector(createNewSelfie))
+        navigationItem.rightBarButtonItem = addSelfieButton
+        // END selfie_list_add_button
+        
         // loading the list of selfies from the selfie store
         do
         {
@@ -60,6 +67,66 @@ class SelfieListViewController: UITableViewController {
     }
     
     // MARK: - Helper methods
+    
+    // BEGIN selfie_list_newSelfieTaken
+    // called after the user has selected a photo
+    func newSelfieTaken(image : UIImage)
+    {
+        // Create a new image
+        let newSelfie = Selfie(title: "New Selfie")
+        
+        // Store the image
+        newSelfie.image = image
+        
+        // Attempt to save the photo
+        do
+        {
+            try SelfieStore.shared.save(selfie: newSelfie)
+        }
+        catch let error
+        {
+            showError(message: "Can't save photo: \(error)")
+            return
+        }
+        
+        // Insert this photo into this view controller's list
+        selfies.insert(newSelfie, at: 0)
+        
+        // Update the table view to show the new photo
+        tableView.insertRows(at: [IndexPath(row: 0, section:0)], with: .automatic)
+    }
+    // END selfie_list_newSelfieTaken
+    
+    // BEGIN selfie_list_createNewSelfie
+    @objc func createNewSelfie()
+    {
+        // Create a new image picker
+        let imagePicker = UIImagePickerController()
+        
+        // If a camera is available, use that; otherwise, use the photo library
+        if UIImagePickerController.isSourceTypeAvailable(.camera)
+        {
+            imagePicker.sourceType = .camera
+            
+            // If the front-facing camera is available, use that
+            if UIImagePickerController.isCameraDeviceAvailable(.front)
+            {
+                imagePicker.cameraDevice = .front
+            }
+        }
+        else
+        {
+            imagePicker.sourceType = .photoLibrary
+        }
+        
+        // We want this object to be notified when the user takes a photo
+        imagePicker.delegate = self
+        
+        // Present the image picker
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    // END selfie_list_createNewSelfie
+    
     // BEGIN selfie_list_showError
     func showError(message : String)
     {
@@ -163,3 +230,33 @@ class SelfieListViewController: UITableViewController {
     // END selfie_list_tableview
 }
 
+// MARK: - Extensions
+// BEGIN selfie_list_extension
+extension SelfieListViewController : UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate
+{
+    // BEGIN selfie_list_picker_delegate
+    // called when the user cancels selecting an image
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+    {
+        self.dismiss(animated: true, completion: nil)
+    }
+    // called when the user has finished selecting an image
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any])
+    {
+        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage
+            ?? info[UIImagePickerControllerOriginalImage] as? UIImage else
+        {
+            showError(message: "Couldn't get a picture from the image picker!")
+            return
+        }
+        
+        self.newSelfieTaken(image:image)
+        
+        // Get rid of the view controller
+        self.dismiss(animated: true, completion: nil)
+    }
+    // END selfie_list_picker_delegate
+}
+// END selfie_list_extension
