@@ -150,6 +150,29 @@ class SelfieListViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     // MARK: - Segues
+    
+    // BEGIN selfie_list_segue
+    // Called when we tap on a row.
+    // The SelfieDetailViewController is given the photo.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "showDetail"
+        {
+            if let indexPath = tableView.indexPathForSelectedRow
+            {
+                let selfie = selfies[indexPath.row]
+                if let controller = (segue.destination as? UINavigationController)?
+                    .topViewController as? SelfieDetailViewController
+                {
+                    controller.selfie = selfie
+                    controller.navigationItem.leftBarButtonItem =
+                        splitViewController?.displayModeButtonItem
+                    controller.navigationItem.leftItemsSupplementBackButton = true
+                }
+            }
+        }
+    }
+    // END selfie_list_segue
 
     // MARK: - Table View
 

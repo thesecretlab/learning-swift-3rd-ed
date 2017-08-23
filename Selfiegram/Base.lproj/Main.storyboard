@@ -72,6 +72,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Selfie" id="mOI-FS-AaM"/>
+                    <connections>
+                        <outlet property="dateCreatedLabel" destination="BPj-gd-e8N" id="f5o-sj-0Hx"/>
+                        <outlet property="selfieImageView" destination="e30-4f-Zgj" id="863-NP-dZh"/>
+                        <outlet property="selfieNameField" destination="yqu-xb-YCA" id="fhp-Z0-PGO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
