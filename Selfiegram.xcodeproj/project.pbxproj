@@ -10,7 +10,7 @@
 		330991B51F4406A1005EF027 /* SelfieStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330991B41F4406A1005EF027 /* SelfieStoreTests.swift */; };
 		3326CDD11F414F800084FDB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD01F414F800084FDB3 /* AppDelegate.swift */; };
 		3326CDD31F414F800084FDB3 /* SelfieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD21F414F800084FDB3 /* SelfieListViewController.swift */; };
-		3326CDD51F414F800084FDB3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD41F414F800084FDB3 /* DetailViewController.swift */; };
+		3326CDD51F414F800084FDB3 /* SelfieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDD41F414F800084FDB3 /* SelfieDetailViewController.swift */; };
 		3326CDD81F414F800084FDB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3326CDD61F414F800084FDB3 /* Main.storyboard */; };
 		3326CDDA1F414F800084FDB3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3326CDD91F414F800084FDB3 /* Assets.xcassets */; };
 		3326CDDD1F414F800084FDB3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3326CDDB1F414F800084FDB3 /* LaunchScreen.storyboard */; };
@@ -41,7 +41,7 @@
 		3326CDCD1F414F800084FDB3 /* Selfiegram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Selfiegram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3326CDD01F414F800084FDB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3326CDD21F414F800084FDB3 /* SelfieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieListViewController.swift; sourceTree = "<group>"; };
-		3326CDD41F414F800084FDB3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		3326CDD41F414F800084FDB3 /* SelfieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieDetailViewController.swift; sourceTree = "<group>"; };
 		3326CDD71F414F800084FDB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3326CDD91F414F800084FDB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3326CDDC1F414F800084FDB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 			children = (
 				3326CDD01F414F800084FDB3 /* AppDelegate.swift */,
 				3326CDD21F414F800084FDB3 /* SelfieListViewController.swift */,
-				3326CDD41F414F800084FDB3 /* DetailViewController.swift */,
+				3326CDD41F414F800084FDB3 /* SelfieDetailViewController.swift */,
 				3326CDD61F414F800084FDB3 /* Main.storyboard */,
 				3326CE001F4169B70084FDB3 /* SelfieStore.swift */,
 				3326CDD91F414F800084FDB3 /* Assets.xcassets */,
@@ -265,7 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3326CDD51F414F800084FDB3 /* DetailViewController.swift in Sources */,
+				3326CDD51F414F800084FDB3 /* SelfieDetailViewController.swift in Sources */,
 				3326CE011F4169B70084FDB3 /* SelfieStore.swift in Sources */,
 				3326CDD31F414F800084FDB3 /* SelfieListViewController.swift in Sources */,
 				3326CDD11F414F800084FDB3 /* AppDelegate.swift in Sources */,

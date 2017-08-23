@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  SelfieDetailViewController.swift
 //  Selfiegram
 //
 //  Created by Tim Nugent on 14/8/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class SelfieDetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
 

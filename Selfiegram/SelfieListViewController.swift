@@ -10,7 +10,7 @@ import UIKit
 
 class SelfieListViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
+    var detailViewController: SelfieDetailViewController? = nil
     
     // BEGIN selfie_array
     // The list of Photo objects we're going to display
@@ -56,7 +56,7 @@ class SelfieListViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1]
                 as? UINavigationController)?.topViewController
-                as? DetailViewController
+                as? SelfieDetailViewController
         }
     }
     // END selfie_list_viewDidLoad
