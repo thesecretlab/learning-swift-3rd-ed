@@ -25,6 +25,30 @@ class SelfieDetailViewController: UIViewController {
     }
     // END selfie_detail_item
     
+    // BEGIN selfie_detail_update
+    @IBAction func doneButtonTapped(_ sender: Any)
+    {
+        self.selfieNameField.resignFirstResponder();
+        
+        // Ensure that we have a selfie to work with
+        guard let selfie = selfie else
+        {
+            return
+        }
+        
+        // Ensure that we have text in the field
+        guard let text = selfieNameField?.text else
+        {
+            return
+        }
+        
+        // Update the Selfie and save it
+        selfie.title = text
+        
+        try? SelfieStore.shared.save(selfie: selfie)
+    }
+    // END selfie_detail_update
+    
     // BEGIN selfie_detail_formatter
     // The date formatter used to format the time and date of the photo
     // It's created in a closure like this so that when it's used, it's
