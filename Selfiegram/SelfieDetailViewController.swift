@@ -7,13 +7,18 @@
 //
 
 import UIKit
+// BEGIN selfie_detail_import
+import MapKit
+// END selfie_detail_import
 
 class SelfieDetailViewController: UIViewController {
 
-    // BEGIN selfie_detail_properties
     @IBOutlet weak var selfieNameField: UITextField!
     @IBOutlet weak var dateCreatedLabel: UILabel!
     @IBOutlet weak var selfieImageView: UIImageView!
+    
+    // BEGIN selfie_detail_properties
+    @IBOutlet weak var mapview: MKMapView!
     // END selfie_detail_properties
     
     // BEGIN selfie_detail_item
@@ -61,7 +66,6 @@ class SelfieDetailViewController: UIViewController {
     }()
     // END selfie_detail_formatter
     
-    // BEGIN selfie_detail_configure
     func configureView()
     {
         guard let selfie = selfie else
@@ -80,8 +84,15 @@ class SelfieDetailViewController: UIViewController {
         selfieNameField.text = selfie.title
         dateCreatedLabel.text = dateFormatter.string(from: selfie.created)
         selfieImageView.image = selfie.image
+        
+        // BEGIN selfie_detail_configure
+        if let position = selfie.position
+        {
+            self.mapview.setCenter(position.location.coordinate, animated: false)
+            mapview.isHidden = false
+        }
+        // END selfie_detail_configure
     }
-    // END selfie_detail_configure
 
     override func viewDidLoad() {
         super.viewDidLoad()
