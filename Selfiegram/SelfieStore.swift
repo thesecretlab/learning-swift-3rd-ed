@@ -7,13 +7,47 @@
 //
 
 import Foundation
-// BEGIN model_imports
 import UIKit.UIImage
+// BEGIN model_imports
+import CoreLocation.CLLocation
 // END model_imports
 
 // BEGIN model_selfie_class_initial
 class Selfie : Codable
 {
+    // BEGIN model_coordinate
+    struct Coordinate : Codable, Equatable
+    {
+        var latitude : Double
+        var longitude : Double
+        
+        // required equality method to conform to the Equatable protocol
+        public static func == (lhs: Selfie.Coordinate, rhs: Selfie.Coordinate) -> Bool
+        {
+            return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+        }
+        
+        var location : CLLocation
+        {
+            get
+            {
+                return CLLocation(latitude: self.latitude, longitude: self.longitude)
+            }
+            set
+            {
+                self.latitude = newValue.coordinate.latitude
+                self.longitude = newValue.coordinate.longitude
+            }
+        }
+        
+        init (location : CLLocation)
+        {
+            self.latitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
+        }
+    }
+    // END model_coordinate
+    
     // BEGIN model_selfie_const_properties
     // When it was created.
     let created : Date
@@ -26,6 +60,11 @@ class Selfie : Codable
     // The name of this selfie
     var title = "New Selfie!"
     // END model_selfie_var_properties
+    
+    // BEGIN model_selfie_position
+    // the location the selfie was taken
+    var position : Coordinate?
+    // END model_selfie_position
     
     // BEGIN model_selfie_computed
     // the image on disk for this selfie
