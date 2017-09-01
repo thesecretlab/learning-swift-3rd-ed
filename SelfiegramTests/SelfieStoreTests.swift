@@ -11,8 +11,9 @@ import XCTest
 @testable import Selfiegram
 // END testable_import
 // BEGIN test_import
-import UIKit
+import CoreLocation
 // END test_import
+import UIKit
 
 class SelfieStoreTests: XCTestCase {
     
@@ -126,4 +127,36 @@ class SelfieStoreTests: XCTestCase {
         
     }
     // END test_delete_selfie
+    
+    // BEGIN test_location_selfie
+    func testLocationSelfie()
+    {
+        // a location for Hobart
+        let location = CLLocation(latitude: -42.8819, longitude: 147.3238)
+        
+        // a new selfie with an image
+        let newSelfie = Selfie(title: "Location Selfie")
+        let newImage = createImage(text: "🐑")
+        newSelfie.image = newImage
+        
+        // storing a location into the selfie
+        newSelfie.position = Selfie.Coordinate(location: location)
+        
+        // saving the selfie with a location
+        do
+        {
+            try SelfieStore.shared.save(selfie: newSelfie)
+        }
+        catch
+        {
+            XCTFail("failed to save the location selfie")
+        }
+        
+        // loading the selfie back from the store
+        let loadedSelfie = SelfieStore.shared.load(id: newSelfie.id)
+        
+        XCTAssertNotNil(loadedSelfie?.position)
+        XCTAssertEqual(newSelfie.position, loadedSelfie?.position)
+    }
+    // END test_location_selfie
 }
