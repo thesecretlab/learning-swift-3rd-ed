@@ -93,7 +93,25 @@ class SelfieDetailViewController: UIViewController {
         }
         // END selfie_detail_configure
     }
-
+    
+    // BEGIN selfie_detail_expandMap
+    @IBAction func expandMap(_ sender: Any)
+    {
+        if let coordinate = self.selfie?.position?.location
+        {
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: coordinate.coordinate),
+                MKLaunchOptionsMapTypeKey: NSNumber(value: MKMapType.mutedStandard.rawValue)]
+            
+            let placemark = MKPlacemark(coordinate: coordinate.coordinate, addressDictionary: nil)
+            let item = MKMapItem(placemark: placemark)
+            item.name = selfie?.title
+            
+            item.openInMaps(launchOptions: options)
+        }
+    }
+    // END selfie_detail_expandMap
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

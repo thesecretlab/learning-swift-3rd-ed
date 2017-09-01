@@ -59,10 +59,14 @@
                             </imageView>
                             <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="mutedStandard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rX3-Eg-bTZ">
                                 <rect key="frame" x="237" y="80" width="67" height="67"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="67" id="AzX-Qv-uXK"/>
                                     <constraint firstAttribute="width" constant="67" id="S7J-hA-DIT"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="8ug-EZ-lW2" appends="YES" id="ZRG-Av-1Kf"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -92,6 +96,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="8ug-EZ-lW2">
+                    <connections>
+                        <action selector="expandMap:" destination="JEX-9P-axG" id="3it-SD-sTZ"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="708.75" y="128.87323943661971"/>
         </scene>
