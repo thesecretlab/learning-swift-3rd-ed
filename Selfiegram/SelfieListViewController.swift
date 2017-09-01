@@ -64,6 +64,11 @@ class SelfieListViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
+        
+        // BEGIN selfie_list_viewWillAppear
+        // reload all data in the tableview
+        tableView.reloadData()
+        // END selfie_list_viewWillAppear
     }
     
     // MARK: - Helper methods
