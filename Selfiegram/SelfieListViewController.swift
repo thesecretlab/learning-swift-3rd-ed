@@ -7,6 +7,9 @@
 //
 
 import UIKit
+// BEGIN selfie_list_import
+import CoreLocation
+// END selfie_list_import
 
 class SelfieListViewController: UITableViewController {
 
@@ -26,8 +29,16 @@ class SelfieListViewController: UITableViewController {
         return formatter
     }()
     // END selfie_list_formatter
-
-    // BEGIN selfie_list_viewDidLoad
+    
+    // BEGIN selfie_list_lastLocation
+    // stores the last location the core location was able to determine
+    var lastLocation : CLLocation?
+    // END selfie_list_lastLocation
+    
+    // BEGIN selfie_list_manager
+    let locationManager = CLLocationManager()
+    // END selfie_list_manager
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -58,8 +69,12 @@ class SelfieListViewController: UITableViewController {
                 as? UINavigationController)?.topViewController
                 as? SelfieDetailViewController
         }
+        
+        // BEGIN selfie_list_viewDidLoad
+        self.locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        // END selfie_list_viewDidLoad
     }
-    // END selfie_list_viewDidLoad
 
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
@@ -73,7 +88,6 @@ class SelfieListViewController: UITableViewController {
     
     // MARK: - Helper methods
     
-    // BEGIN selfie_list_newSelfieTaken
     // called after the user has selected a photo
     func newSelfieTaken(image : UIImage)
     {
@@ -82,6 +96,13 @@ class SelfieListViewController: UITableViewController {
         
         // Store the image
         newSelfie.image = image
+        
+        // BEGIN selfie_list_newSelfieTaken
+        if let location = self.lastLocation
+        {
+            newSelfie.position = Selfie.Coordinate(location: location)
+        }
+        // END selfie_list_newSelfieTaken
         
         // Attempt to save the photo
         do
@@ -100,11 +121,34 @@ class SelfieListViewController: UITableViewController {
         // Update the table view to show the new photo
         tableView.insertRows(at: [IndexPath(row: 0, section:0)], with: .automatic)
     }
-    // END selfie_list_newSelfieTaken
     
-    // BEGIN selfie_list_createNewSelfie
     @objc func createNewSelfie()
     {
+        // BEGIN selfie_list_createNewSelfie
+        // Clear the last location, so that this next image doesn't
+        // end up with an out-of-date location
+        lastLocation = nil
+        
+        // Handle our authorisation status
+        switch CLLocationManager.authorizationStatus()
+        {
+        case .denied, .restricted:
+            // We either don't have permission, or the user is
+            // not permitted to use location services at all.
+            // Give up at this point.
+            return
+        case .notDetermined:
+            // We don't know if we have permission or not. Ask for it.
+            locationManager.requestWhenInUseAuthorization()
+        default:
+            // We have permission; nothing to do here.
+            break
+        }
+        
+        // Request a one-time location update.
+        locationManager.requestLocation()
+        // END selfie_list_createNewSelfie
+        
         // Create a new image picker
         let imagePicker = UIImagePickerController()
         
@@ -130,7 +174,6 @@ class SelfieListViewController: UITableViewController {
         // Present the image picker
         self.present(imagePicker, animated: true, completion: nil)
     }
-    // END selfie_list_createNewSelfie
     
     // BEGIN selfie_list_showError
     func showError(message : String)
@@ -259,7 +302,6 @@ class SelfieListViewController: UITableViewController {
 }
 
 // MARK: - Extensions
-// BEGIN selfie_list_extension
 extension SelfieListViewController : UIImagePickerControllerDelegate,
     UINavigationControllerDelegate
 {
@@ -286,5 +328,24 @@ extension SelfieListViewController : UIImagePickerControllerDelegate,
         self.dismiss(animated: true, completion: nil)
     }
     // END selfie_list_picker_delegate
+}
+
+// BEGIN selfie_list_extension
+extension SelfieListViewController : CLLocationManagerDelegate
+{
+    // BEGIN selfie_list_didUpdateLocations
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation])
+    {
+        self.lastLocation = locations.last
+    }
+    // END selfie_list_didUpdateLocations
+    // BEGIN selfie_list_location_error
+    func locationManager(_ manager: CLLocationManager,
+                         didFailWithError error: Error)
+    {
+        showError(message: error.localizedDescription)
+    }
+    // END selfie_list_location_error
 }
 // END selfie_list_extension
