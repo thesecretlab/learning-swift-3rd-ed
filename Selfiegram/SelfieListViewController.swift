@@ -124,29 +124,36 @@ class SelfieListViewController: UITableViewController {
     
     @objc func createNewSelfie()
     {
-        // BEGIN selfie_list_createNewSelfie
         // Clear the last location, so that this next image doesn't
         // end up with an out-of-date location
         lastLocation = nil
         
-        // Handle our authorisation status
-        switch CLLocationManager.authorizationStatus()
-        {
-        case .denied, .restricted:
-            // We either don't have permission, or the user is
-            // not permitted to use location services at all.
-            // Give up at this point.
-            return
-        case .notDetermined:
-            // We don't know if we have permission or not. Ask for it.
-            locationManager.requestWhenInUseAuthorization()
-        default:
-            // We have permission; nothing to do here.
-            break
-        }
+        // BEGIN selfie_list_createNewSelfie
+        let shouldGetLocation =
+            UserDefaults.standard.bool(forKey: SettingsKey.saveLocation.rawValue)
         
-        // Request a one-time location update.
-        locationManager.requestLocation()
+        if shouldGetLocation
+        {
+            // Handle our authorisation status
+            switch CLLocationManager.authorizationStatus()
+            {
+            case .denied, .restricted:
+                // We either don't have permission, or the user is
+                // not permitted to use location services at all.
+                // Give up at this point.
+                return
+            case .notDetermined:
+                // We don't know if we have permission or not. Ask for it.
+                locationManager.requestWhenInUseAuthorization()
+            default:
+                // We have permission; nothing to do here.
+                break
+            }
+            // setting us to be the location manager delegate
+            locationManager.delegate = self
+            // Request a one-time location update.
+            locationManager.requestLocation()
+        }
         // END selfie_list_createNewSelfie
         
         // Create a new image picker
