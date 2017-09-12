@@ -183,7 +183,7 @@
         <!--Settings-->
         <scene sceneID="bxM-yZ-aYI">
             <objects>
-                <tableViewController title="Settings" id="7kr-AF-Asz" sceneMemberID="viewController">
+                <tableViewController title="Settings" id="7kr-AF-Asz" customClass="SettingsTableViewController" customModule="Selfiegram" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="3Qn-o0-Kdu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -206,6 +206,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="q5D-eJ-rbk">
                                                     <rect key="frame" x="261" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="locationSwitchToggled:" destination="7kr-AF-Asz" eventType="valueChanged" id="iM7-Vb-mox"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -225,6 +228,9 @@
                             <outlet property="delegate" destination="7kr-AF-Asz" id="KOA-Pf-5uP"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="locationSwitch" destination="q5D-eJ-rbk" id="oLa-Aa-vkj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ySK-9O-KRD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
