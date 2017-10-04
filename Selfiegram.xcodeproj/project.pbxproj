@@ -18,6 +18,10 @@
 		3326CDF31F414F800084FDB3 /* SelfiegramUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDF21F414F800084FDB3 /* SelfiegramUITests.swift */; };
 		3326CE011F4169B70084FDB3 /* SelfieStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CE001F4169B70084FDB3 /* SelfieStore.swift */; };
 		337C3D481F678092009A64FD /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337C3D471F678092009A64FD /* SettingsTableViewController.swift */; };
+		33D8D32B1F845339009DD425 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D8D32A1F845339009DD425 /* Theme.swift */; };
+		33D8D32C1F8465F3009DD425 /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */; };
+		33D8D32D1F8465F3009DD425 /* Quicksand-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */; };
+		33D8D32E1F8465F3009DD425 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,10 @@
 		3326CDF41F414F800084FDB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3326CE001F4169B70084FDB3 /* SelfieStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieStore.swift; sourceTree = "<group>"; };
 		337C3D471F678092009A64FD /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.otf"; sourceTree = "<group>"; };
+		33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.otf"; sourceTree = "<group>"; };
+		33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster_1.3.otf; sourceTree = "<group>"; };
+		33D8D32A1F845339009DD425 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +113,8 @@
 		3326CDCF1F414F800084FDB3 /* Selfiegram */ = {
 			isa = PBXGroup;
 			children = (
+				33D8D32A1F845339009DD425 /* Theme.swift */,
+				33D8D3261F834CD3009DD425 /* Fonts */,
 				3326CDD01F414F800084FDB3 /* AppDelegate.swift */,
 				3326CDD21F414F800084FDB3 /* SelfieListViewController.swift */,
 				3326CDD41F414F800084FDB3 /* SelfieDetailViewController.swift */,
@@ -135,6 +145,16 @@
 				3326CDF41F414F800084FDB3 /* Info.plist */,
 			);
 			path = SelfiegramUITests;
+			sourceTree = "<group>";
+		};
+		33D8D3261F834CD3009DD425 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */,
+				33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */,
+				33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,6 +261,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33D8D32C1F8465F3009DD425 /* Quicksand-Regular.otf in Resources */,
+				33D8D32D1F8465F3009DD425 /* Quicksand-Bold.otf in Resources */,
+				33D8D32E1F8465F3009DD425 /* Lobster_1.3.otf in Resources */,
 				3326CDDD1F414F800084FDB3 /* LaunchScreen.storyboard in Resources */,
 				3326CDDA1F414F800084FDB3 /* Assets.xcassets in Resources */,
 				3326CDD81F414F800084FDB3 /* Main.storyboard in Resources */,
@@ -271,6 +294,7 @@
 				3326CDD51F414F800084FDB3 /* SelfieDetailViewController.swift in Sources */,
 				337C3D481F678092009A64FD /* SettingsTableViewController.swift in Sources */,
 				3326CE011F4169B70084FDB3 /* SelfieStore.swift in Sources */,
+				33D8D32B1F845339009DD425 /* Theme.swift in Sources */,
 				3326CDD31F414F800084FDB3 /* SelfieListViewController.swift in Sources */,
 				3326CDD11F414F800084FDB3 /* AppDelegate.swift in Sources */,
 			);
