@@ -66,6 +66,32 @@ class SelfieDetailViewController: UIViewController {
     }()
     // END selfie_detail_formatter
     
+    // BEGIN selfie_detail_sharing
+    @IBAction func shareSelfie(_ sender: Any) {
+        guard let image = self.selfie?.image else {
+            
+            // pop up an alert dialogue letting us know it has failed
+            let alert = UIAlertController(title: "Error",
+                                          message: "Unable to share selfie without an image",
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK",
+                                       style: .default,
+                                       handler: nil)
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        let activity = UIActivityViewController(activityItems: [image],
+                                                applicationActivities: nil)
+        
+        self.present(activity, animated: true, completion: nil)
+    }
+    // END selfie_detail_sharing
+    
     func configureView()
     {
         guard let selfie = selfie else
