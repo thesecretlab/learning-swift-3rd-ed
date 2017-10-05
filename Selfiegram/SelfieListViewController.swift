@@ -275,16 +275,29 @@ class SelfieListViewController: UITableViewController {
     {
         return true
     }
-    // END selfie_list_canEditRowAt
-    // BEGIN selfie_list_commitEditingStyle
-    override func tableView(_ tableView: UITableView,
-                            commit editingStyle: UITableViewCellEditingStyle,
-                            forRowAt indexPath: IndexPath) {
-        // If this was a deletion, we have deleting to do
-        if editingStyle == .delete
-        {
+    
+    // BEGIN selfie_list_editActionsForRowAt
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let share = UITableViewRowAction(style: .normal, title: "Share")
+        { (action, indexPath) in
+        
+            guard let image = self.selfies[indexPath.row].image else
+            {
+                self.showError(message: "Unable to share selfie without an image")
+                return
+            }
+            let activity = UIActivityViewController(activityItems: [image],
+                                                applicationActivities: nil)
+        
+            self.present(activity, animated: true, completion: nil)
+        }
+        share.backgroundColor = self.view.tintColor
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete")
+        { (action, indexPath) in
             // Get the object from the content array
-            let selfieToRemove = selfies[indexPath.row]
+            let selfieToRemove = self.selfies[indexPath.row]
             
             // Attempt to delete the selfie
             do
@@ -292,18 +305,20 @@ class SelfieListViewController: UITableViewController {
                 try SelfieStore.shared.delete(selfie: selfieToRemove)
                 
                 // Remove it from that array
-                selfies.remove(at: indexPath.row)
+                self.selfies.remove(at: indexPath.row)
                 
                 // Remove the entry from the table view
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
             catch
             {
-                showError(message: "Failed to delete \(selfieToRemove.title).")
+                self.showError(message: "Failed to delete \(selfieToRemove.title).")
             }
         }
+        
+        return [delete,share]
     }
-    // END selfie_list_commitEditingStyle
+    // END selfie_list_editActionsForRowAt
     
     // END selfie_list_tableview
 }
