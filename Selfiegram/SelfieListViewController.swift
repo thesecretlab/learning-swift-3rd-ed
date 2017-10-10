@@ -167,7 +167,7 @@ class SelfieListViewController: UITableViewController {
         }
         // END selfie_list_capture_view_init
         
-        //BEGIN selfie_list_capture_view_closure
+        // BEGIN selfie_list_capture_view_closure
         capture.completion = {(image : UIImage?) in
             
             if let image = image {
