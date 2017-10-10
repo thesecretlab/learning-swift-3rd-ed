@@ -156,30 +156,31 @@ class SelfieListViewController: UITableViewController {
         }
         // END selfie_list_createNewSelfie
         
-        // Create a new image picker
-        let imagePicker = UIImagePickerController()
+        // BEGIN selfie_list_capture_view_init
+        guard let navigation = self.storyboard?
+                .instantiateViewController(withIdentifier: "CaptureScene")
+                as? UINavigationController,
+              let capture = navigation.viewControllers.first
+                as? CaptureViewController
+        else {
+            fatalError("Failed to create the capture view controller!")
+        }
+        // END selfie_list_capture_view_init
         
-        // If a camera is available, use that; otherwise, use the photo library
-        if UIImagePickerController.isSourceTypeAvailable(.camera)
-        {
-            imagePicker.sourceType = .camera
+        //BEGIN selfie_list_capture_view_closure
+        capture.completion = {(image : UIImage?) in
             
-            // If the front-facing camera is available, use that
-            if UIImagePickerController.isCameraDeviceAvailable(.front)
-            {
-                imagePicker.cameraDevice = .front
+            if let image = image {
+                self.newSelfieTaken(image: image)
             }
+            
+            self.dismiss(animated: true, completion: nil)
         }
-        else
-        {
-            imagePicker.sourceType = .photoLibrary
-        }
+        // END selfie_list_capture_view_closure
         
-        // We want this object to be notified when the user takes a photo
-        imagePicker.delegate = self
-        
-        // Present the image picker
-        self.present(imagePicker, animated: true, completion: nil)
+        // BEGIN selfie_list_capture_present
+        self.present(navigation, animated: true, completion: nil)
+        // END selfie_list_capture_present
     }
     
     // BEGIN selfie_list_showError
@@ -324,33 +325,6 @@ class SelfieListViewController: UITableViewController {
 }
 
 // MARK: - Extensions
-extension SelfieListViewController : UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate
-{
-    // BEGIN selfie_list_picker_delegate
-    // called when the user cancels selecting an image
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
-    {
-        self.dismiss(animated: true, completion: nil)
-    }
-    // called when the user has finished selecting an image
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : Any])
-    {
-        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage
-            ?? info[UIImagePickerControllerOriginalImage] as? UIImage else
-        {
-            showError(message: "Couldn't get a picture from the image picker!")
-            return
-        }
-        
-        self.newSelfieTaken(image:image)
-        
-        // Get rid of the view controller
-        self.dismiss(animated: true, completion: nil)
-    }
-    // END selfie_list_picker_delegate
-}
 
 // BEGIN selfie_list_extension
 extension SelfieListViewController : CLLocationManagerDelegate

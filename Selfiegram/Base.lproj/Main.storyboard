@@ -288,6 +288,94 @@
             </objects>
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
+        <!--Selfie!-->
+        <scene sceneID="9rb-8k-oXb">
+            <objects>
+                <viewController id="7KM-xt-Np7" customClass="CaptureViewController" customModule="Selfiegram" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fxi-h4-Qj4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-bs-lq8" customClass="PreviewView" customModule="Selfiegram" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="3KR-bH-oQc" appends="YES" id="X7l-Y7-K84"/>
+                                </connections>
+                            </view>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTB-Bb-hCW">
+                                <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rnG-tV-Vd5">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to take a selfie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iex-nC-JFD">
+                                            <rect key="frame" x="89" y="10" width="143" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Iex-nC-JFD" firstAttribute="centerY" secondItem="rnG-tV-Vd5" secondAttribute="centerY" id="JC9-3y-3Uv"/>
+                                        <constraint firstItem="Iex-nC-JFD" firstAttribute="centerX" secondItem="rnG-tV-Vd5" secondAttribute="centerX" id="a6S-45-Q3I"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Nbs-fS-lXZ"/>
+                                </constraints>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hTB-Bb-hCW" firstAttribute="leading" secondItem="3jb-vk-AYc" secondAttribute="leading" id="0T5-gC-Oew"/>
+                            <constraint firstItem="hTB-Bb-hCW" firstAttribute="trailing" secondItem="3jb-vk-AYc" secondAttribute="trailing" id="ALF-Jc-IrB"/>
+                            <constraint firstItem="RYu-bs-lq8" firstAttribute="leading" secondItem="3jb-vk-AYc" secondAttribute="leading" id="H7v-vl-DSP"/>
+                            <constraint firstItem="RYu-bs-lq8" firstAttribute="trailing" secondItem="3jb-vk-AYc" secondAttribute="trailing" id="Lo4-a8-XfS"/>
+                            <constraint firstItem="RYu-bs-lq8" firstAttribute="bottom" secondItem="3jb-vk-AYc" secondAttribute="bottom" id="QbA-Iv-28w"/>
+                            <constraint firstItem="3jb-vk-AYc" firstAttribute="bottom" secondItem="hTB-Bb-hCW" secondAttribute="bottom" id="X4q-rp-1KZ"/>
+                            <constraint firstItem="RYu-bs-lq8" firstAttribute="top" secondItem="fxi-h4-Qj4" secondAttribute="top" id="mYy-HW-tPa"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3jb-vk-AYc"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Selfie!" id="qcz-0V-T3R">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="87b-ct-2TF">
+                            <connections>
+                                <action selector="close:" destination="7KM-xt-Np7" id="qHW-YV-fT8"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cameraPreview" destination="RYu-bs-lq8" id="Lm3-kF-Haz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zet-O1-vSH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="3KR-bH-oQc">
+                    <connections>
+                        <action selector="takeSelfie:" destination="7KM-xt-Np7" id="6fb-26-Eef"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="708.75" y="867.25352112676057"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LkQ-Hy-YxH">
+            <objects>
+                <navigationController storyboardIdentifier="CaptureScene" id="dT6-OL-87g" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="CEQ-C5-ZLx">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="7KM-xt-Np7" kind="relationship" relationship="rootViewController" id="xXD-b8-9xb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Tt-6C-A1Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-56" y="867"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>
