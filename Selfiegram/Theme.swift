@@ -7,8 +7,11 @@
 //
 
 import Foundation
+// BEGIN theme_import
 import UIKit
+// END theme_import
 
+// BEGIN theme_font_ext
 extension UIFont {
     convenience init? (familyName: String, size: CGFloat = UIFont.systemFontSize, variantName: String? = nil) {
         // Note! This is how you'd figure out the internal font name
@@ -30,6 +33,7 @@ extension UIFont {
         self.init(name: name, size: size)
     }
 }
+// END theme_font_ext
 
 // BEGIN theme_struct
 struct Theme {
@@ -75,6 +79,7 @@ struct Theme {
         
         // theming the buttons' text
         barButton.setTitleTextAttributes([.font: primaryFont], for: .normal)
+        barButton.setTitleTextAttributes([.font: primaryFont], for: .highlighted)
         
         buttonLabel.font = primaryFont
         // END theme_bulk
