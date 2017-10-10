@@ -142,7 +142,7 @@ let secretBankAccount = try! BankAccount(amount: 50)
 
 // BEGIN playground_memory_class
 class Human {
-    var bestFriend : Dog?
+    weak var bestFriend : Dog?
     
     var name : String
     
@@ -155,7 +155,7 @@ class Human {
     }
 }
 class Dog {
-    var friendBeast : Human?
+    weak var friendBeast : Human?
     
     var name : String
     
@@ -171,8 +171,6 @@ class Dog {
 // BEGIN playground_memory_vars
 var turner : Human? = Human(name:"Turner")
 var hooch : Dog? = Dog(name:"Hooch")
-turner = nil // prints "Turner is being removed"
-hooch = nil // print "Hooch is being removed"
 // END playground_memory_vars
 
 // BEGIN playground_memory_properties
@@ -181,8 +179,8 @@ hooch?.friendBeast = turner
 // END playground_memory_properties
 
 // BEGIN playground_memory_nil
-turner = nil // does nothing
-hooch = nil // does nothing
+turner = nil // "Turner is being removed"
+hooch = nil // "Hooch is being removed"
 // END playground_memory_nil
 
 // BEGIN playground_memory_unowned_class
