@@ -18,6 +18,7 @@
 		3326CDF31F414F800084FDB3 /* SelfiegramUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CDF21F414F800084FDB3 /* SelfiegramUITests.swift */; };
 		3326CE011F4169B70084FDB3 /* SelfieStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326CE001F4169B70084FDB3 /* SelfieStore.swift */; };
 		33433CDB1F8DBF3800BE2669 /* OverlayStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33433CDA1F8DBF3800BE2669 /* OverlayStore.swift */; };
+		33433CDD1F8F0C4700BE2669 /* DataLoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33433CDC1F8F0C4700BE2669 /* DataLoadingTests.swift */; };
 		337C3D481F678092009A64FD /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337C3D471F678092009A64FD /* SettingsTableViewController.swift */; };
 		33AE6A671F86FA98006D9971 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AE6A661F86FA98006D9971 /* CaptureViewController.swift */; };
 		33D8D32B1F845339009DD425 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D8D32A1F845339009DD425 /* Theme.swift */; };
@@ -61,6 +62,7 @@
 		3326CDF41F414F800084FDB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3326CE001F4169B70084FDB3 /* SelfieStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieStore.swift; sourceTree = "<group>"; };
 		33433CDA1F8DBF3800BE2669 /* OverlayStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStore.swift; sourceTree = "<group>"; };
+		33433CDC1F8F0C4700BE2669 /* DataLoadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoadingTests.swift; sourceTree = "<group>"; };
 		337C3D471F678092009A64FD /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		33AE6A661F86FA98006D9971 /* CaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.otf"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		3326CDE61F414F800084FDB3 /* SelfiegramTests */ = {
 			isa = PBXGroup;
 			children = (
+				33433CDC1F8F0C4700BE2669 /* DataLoadingTests.swift */,
 				330991B41F4406A1005EF027 /* SelfieStoreTests.swift */,
 				3326CDE71F414F800084FDB3 /* SelfiegramTests.swift */,
 				3326CDE91F414F800084FDB3 /* Info.plist */,
@@ -312,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33433CDD1F8F0C4700BE2669 /* DataLoadingTests.swift in Sources */,
 				3326CDE81F414F800084FDB3 /* SelfiegramTests.swift in Sources */,
 				330991B51F4406A1005EF027 /* SelfieStoreTests.swift in Sources */,
 			);
