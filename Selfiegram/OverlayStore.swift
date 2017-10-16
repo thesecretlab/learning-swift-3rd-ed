@@ -82,11 +82,134 @@ final class OverlayManager {
     }
     // END overlay_manager_init
     
-    // BEGIN overlay_manager_method_stubs
-    func availableOverlays() -> [Overlay] { return [] }
-    func refreshOverlays(completion: @escaping (OverlayList?, Error?) -> Void){}
-    func loadOverlayAssets(refresh : Bool = false, completion: @escaping () -> Void) {}
-    // END overlay_manager_method_stubs
+    // BEGIN overlay_availableOverlays
+    func availableOverlays() -> [Overlay] {
+        return overlayInfo.flatMap { Overlay(info: $0) }
+    }
+    // END overlay_availableOverlays
+    
+    // BEGIN overlay_refresh
+    func refreshOverlays(completion: @escaping (OverlayList?, Error?) -> Void) {
+        // Create a data task to download it.
+        URLSession.shared.dataTask(with: OverlayManager.overlayListURL) { (data, response, error) in
+            
+            // Report if we got an error, or for some other reason data is nil
+            if let error = error {
+                NSLog("Failed to download \(OverlayManager.overlayListURL): \(error)")
+                completion(nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                completion(nil, OverlayManagerError.noDataLoaded)
+                return
+            }
+            
+            // Cache the data we got
+            do {
+                try data.write(to: OverlayManager.cachedOverlayListURL)
+            } catch let error {
+                NSLog("Failed to write data to \(OverlayManager.cachedOverlayListURL); reason: \(error)")
+                completion(nil, error)
+            }
+            
+            // Parse the data and store it locally
+            do {
+                let overlayList = try JSONDecoder().decode(OverlayList.self, from: data)
+                
+                self.overlayInfo = overlayList
+                
+                completion(self.overlayInfo, nil)
+                return
+                
+            } catch let decodeError {
+                completion(nil, OverlayManagerError.cannotParseData(underlyingError: decodeError))
+            }
+            
+            }.resume()
+    }
+    // END overlay_refresh
+    
+    // BEGIN overlay_image_download
+    // A group for coordinating multiple simultaneous downloads.
+    private let loadingDispatchGroup = DispatchGroup()
+    
+    // Downloads all assets used by overlays. If 'refresh' is true, the list of overlays
+    // is updated first.
+    func loadOverlayAssets(refresh : Bool = false, completion: @escaping () -> Void) {
+        
+        // If we're told to refresh, then do that, and re-run this function with 'refresh' set to false
+        if (refresh) {
+            self.refreshOverlays(completion: { (overlays, error) in
+                self.loadOverlayAssets(refresh:  false, completion: completion)
+            })
+            return
+        }
+        
+        // For each overlay we know about, download its assets
+        for info in overlayInfo {
+            
+            // Each overlay has three assets; we need to download each one
+            let names = [info.icon, info.leftImage, info.rightImage]
+            
+            // For each asset, we need to figure out:
+            // 1. where to get it from
+            // 2. where to put it
+            typealias TaskURL = (source: URL, destination: URL)
+            
+            // Create an array of these tuples
+            let taskURLs : [TaskURL] = names.flatMap {
+                guard let sourceURL
+                    = URL(string: $0,
+                          relativeTo: OverlayManager.downloadURLBase)
+                else {
+                    return nil
+                }
+                
+                guard let destinationURL
+                    = URL(string: $0,
+                          relativeTo: OverlayManager.cacheDirectoryURL)
+                else {
+                    return nil
+                }
+                
+                return (source: sourceURL, destination: destinationURL)
+            }
+            
+            // Now we know what we need to do, start doing it
+            for taskURL in taskURLs {
+                // 'enter' causes the dispatch group to register that a job is not yet done
+                loadingDispatchGroup.enter()
+                
+                // Begin the download
+                URLSession.shared.dataTask(with: taskURL.source, completionHandler: { (data, response, error) in
+                    
+                    defer {
+                        // This job is now done, so indicate that to the dispatch group
+                        self.loadingDispatchGroup.leave()
+                    }
+                    
+                    guard let data = data else {
+                        NSLog("Failed to download \(taskURL.source): \(error!)")
+                        return
+                    }
+                    
+                    // Grab the data and cache it
+                    do {
+                        try data.write(to: taskURL.destination)
+                    } catch let error {
+                        NSLog("Failed to write to \(taskURL.destination): \(error)")
+                    }
+                }).resume()
+            }
+        }
+        
+        // Wait for all downloads to finish and then run the completion block
+        loadingDispatchGroup.notify(queue: .main) {
+            completion()
+        }
+    }
+    // END overlay_image_download
 }
 // END overlay_mananger_class
 
