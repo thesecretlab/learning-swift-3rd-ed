@@ -349,6 +349,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cameraPreview" destination="RYu-bs-lq8" id="Lm3-kF-Haz"/>
+                        <segue destination="0OP-Tp-eib" kind="show" identifier="showEditing" id="Edt-8K-rav"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zet-O1-vSH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -359,6 +360,55 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="708.75" y="867.25352112676057"/>
+        </scene>
+        <!--Edit-->
+        <scene sceneID="3FL-HO-hWM">
+            <objects>
+                <viewController title="Edit" id="0OP-Tp-eib" customClass="EditingViewController" customModule="Selfiegram" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Bm2-sy-NLZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yip-Hb-dQz">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vD9-qV-hht">
+                                <rect key="frame" x="0.0" y="440" width="320" height="128"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="2qo-BL-Nki">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="2qo-BL-Nki" secondAttribute="trailing" id="J5O-fw-39v"/>
+                                    <constraint firstAttribute="height" constant="128" id="R1Y-XS-m2D"/>
+                                    <constraint firstItem="2qo-BL-Nki" firstAttribute="top" secondItem="vD9-qV-hht" secondAttribute="top" id="R83-HB-kuF"/>
+                                    <constraint firstAttribute="bottom" secondItem="2qo-BL-Nki" secondAttribute="bottom" id="SCX-Sy-eOD"/>
+                                    <constraint firstItem="2qo-BL-Nki" firstAttribute="height" secondItem="vD9-qV-hht" secondAttribute="height" id="ujl-zr-kVW"/>
+                                    <constraint firstItem="2qo-BL-Nki" firstAttribute="leading" secondItem="vD9-qV-hht" secondAttribute="leading" id="xK1-LL-cLw"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vD9-qV-hht" firstAttribute="trailing" secondItem="x93-w1-Mhh" secondAttribute="trailing" id="7Fh-7Q-Poe"/>
+                            <constraint firstItem="Yip-Hb-dQz" firstAttribute="bottom" secondItem="x93-w1-Mhh" secondAttribute="bottom" id="9Wh-Ai-8fa"/>
+                            <constraint firstItem="Yip-Hb-dQz" firstAttribute="top" secondItem="Bm2-sy-NLZ" secondAttribute="top" id="CTo-2e-MP0"/>
+                            <constraint firstItem="vD9-qV-hht" firstAttribute="leading" secondItem="x93-w1-Mhh" secondAttribute="leading" id="Pdp-yZ-qlL"/>
+                            <constraint firstItem="Yip-Hb-dQz" firstAttribute="trailing" secondItem="x93-w1-Mhh" secondAttribute="trailing" id="TKc-mD-rai"/>
+                            <constraint firstItem="vD9-qV-hht" firstAttribute="bottom" secondItem="x93-w1-Mhh" secondAttribute="bottom" id="YFo-PS-FMP"/>
+                            <constraint firstItem="Yip-Hb-dQz" firstAttribute="leading" secondItem="x93-w1-Mhh" secondAttribute="leading" id="pzd-HP-sog"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="x93-w1-Mhh"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Yip-Hb-dQz" id="RUO-U7-g6z"/>
+                        <outlet property="optionsStackView" destination="2qo-BL-Nki" id="cz8-aL-KWF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JeE-He-MXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1516.875" y="865.14084507042253"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LkQ-Hy-YxH">
