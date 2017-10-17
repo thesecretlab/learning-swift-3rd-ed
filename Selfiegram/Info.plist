@@ -43,6 +43,10 @@
 			<false/>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We use the camera to take those sweet, sweet selfies.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We use the library to save your sweet, sweet selfies.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
