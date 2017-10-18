@@ -21,6 +21,7 @@
 		33433CDD1F8F0C4700BE2669 /* DataLoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33433CDC1F8F0C4700BE2669 /* DataLoadingTests.swift */; };
 		337C3D481F678092009A64FD /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337C3D471F678092009A64FD /* SettingsTableViewController.swift */; };
 		33AE6A671F86FA98006D9971 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AE6A661F86FA98006D9971 /* CaptureViewController.swift */; };
+		33BD72F71F95A24F003B1A0E /* EditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BD72F61F95A24F003B1A0E /* EditingViewController.swift */; };
 		33D8D32B1F845339009DD425 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D8D32A1F845339009DD425 /* Theme.swift */; };
 		33D8D32C1F8465F3009DD425 /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */; };
 		33D8D32D1F8465F3009DD425 /* Quicksand-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */; };
@@ -65,6 +66,7 @@
 		33433CDC1F8F0C4700BE2669 /* DataLoadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoadingTests.swift; sourceTree = "<group>"; };
 		337C3D471F678092009A64FD /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		33AE6A661F86FA98006D9971 /* CaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
+		33BD72F61F95A24F003B1A0E /* EditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewController.swift; sourceTree = "<group>"; };
 		33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.otf"; sourceTree = "<group>"; };
 		33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster_1.3.otf; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				33AE6A661F86FA98006D9971 /* CaptureViewController.swift */,
 				3326CDD41F414F800084FDB3 /* SelfieDetailViewController.swift */,
 				3326CDD61F414F800084FDB3 /* Main.storyboard */,
+				33BD72F61F95A24F003B1A0E /* EditingViewController.swift */,
 				337C3D471F678092009A64FD /* SettingsTableViewController.swift */,
 				3326CE001F4169B70084FDB3 /* SelfieStore.swift */,
 				3326CDD91F414F800084FDB3 /* Assets.xcassets */,
@@ -301,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3326CDD51F414F800084FDB3 /* SelfieDetailViewController.swift in Sources */,
+				33BD72F71F95A24F003B1A0E /* EditingViewController.swift in Sources */,
 				337C3D481F678092009A64FD /* SettingsTableViewController.swift in Sources */,
 				33AE6A671F86FA98006D9971 /* CaptureViewController.swift in Sources */,
 				3326CE011F4169B70084FDB3 /* SelfieStore.swift in Sources */,
@@ -475,7 +479,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 694VUN5E8G;
 				INFOPLIST_FILE = Selfiegram/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = coffee.lonely.Selfiegram;
@@ -489,7 +493,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 694VUN5E8G;
 				INFOPLIST_FILE = Selfiegram/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = coffee.lonely.Selfiegram;
