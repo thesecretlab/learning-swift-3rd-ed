@@ -165,6 +165,35 @@ class CaptureViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // BEGIN capture_view_segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destination = segue.destination as? EditingViewController else {
+            fatalError("The destination view controller is not configured correctly.")
+        }
+        
+        guard let image = sender as? UIImage else {
+            fatalError("Expected to receive an image.")
+        }
+        
+        // Give the view controller the image we just captured, and the completion handler
+        // it should call when the user has finished editing the image.
+        destination.image = image
+        destination.completion = self.completion
+    }
+    // END capture_view_segue
+    
+    // BEGIN capture_view_willappear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if !self.captureSession.isRunning {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession.startRunning()
+            }
+        }
+    }
+    // END capture_view_willappear
 }
 
 // BEGIN capture_view_extension
@@ -184,7 +213,8 @@ extension CaptureViewController : AVCapturePhotoCaptureDelegate {
                 return
         }
         
-        self.completion?(image)
+        self.captureSession.stopRunning()
+        self.performSegue(withIdentifier: "showEditing", sender: image)
     }
     // END capture_view_extension_method
 }

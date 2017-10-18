@@ -25,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         Theme.apply()
         // END theme_app_delegate
         
+        // BEGIN overlay_manager_start
+        OverlayManager.shared.loadOverlayAssets(refresh: true, completion: {})
+        // END overlay_manager_start
+        
         return true
     }
 
