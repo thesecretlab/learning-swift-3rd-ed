@@ -1,0 +1,48 @@
+
+/* Class = "UIViewController"; title = "Edit"; ObjectID = "0OP-Tp-eib"; */
+"0OP-Tp-eib.title" = "Modifier";
+
+/* Class = "UILabel"; text = "Store Location"; ObjectID = "3M0-qa-gql"; */
+"3M0-qa-gql.text" = "Définir l'emplacement";
+
+/* Class = "UITableViewController"; title = "Selfies List"; ObjectID = "7bK-jq-Zjz"; */
+"7bK-jq-Zjz.title" = "Selfies";
+
+/* Class = "UITableViewController"; title = "Settings"; ObjectID = "7kr-AF-Asz"; */
+"7kr-AF-Asz.title" = "Paramètres";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Arm-wq-HPj"; */
+"Arm-wq-HPj.text" = "Titre";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "BPj-gd-e8N"; */
+"BPj-gd-e8N.text" = "Étiquette";
+
+/* Class = "UILabel"; text = "Tap to take a selfie"; ObjectID = "Iex-nC-JFD"; */
+"Iex-nC-JFD.text" = "Appuyez pour prendre une photo.";
+
+/* Class = "UIViewController"; title = "Selfie Detail"; ObjectID = "JEX-9P-axG"; */
+"JEX-9P-axG.title" = "Selfie Detail";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "LQD-eK-Wu8"; */
+"LQD-eK-Wu8.text" = "Subtitle";
+
+/* Class = "UINavigationController"; title = "Master"; ObjectID = "RMx-3f-FxP"; */
+"RMx-3f-FxP.title" = "Master";
+
+/* Class = "UINavigationItem"; title = "Selfies"; ObjectID = "Zdf-7t-Un8"; */
+"Zdf-7t-Un8.title" = "Selfies";
+
+/* Class = "UINavigationItem"; title = "Selfie"; ObjectID = "mOI-FS-AaM"; */
+"mOI-FS-AaM.title" = "Selfie";
+
+/* Class = "UINavigationItem"; title = "Selfie!"; ObjectID = "qcz-0V-T3R"; */
+"qcz-0V-T3R.title" = "Selfie!";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "rmF-yO-i6l"; */
+"rmF-yO-i6l.normalTitle" = "Paramètres";
+
+/* Class = "UITextField"; placeholder = "Selfie Name"; ObjectID = "yqu-xb-YCA"; */
+"yqu-xb-YCA.placeholder" = "Nom de l'image";
+
+/* Class = "UILabel"; text = "Remind me at 10am"; ObjectID = "zGB-Lt-Yt7"; */
+"zGB-Lt-Yt7.text" = "Rappelez-moi à 10 h";
