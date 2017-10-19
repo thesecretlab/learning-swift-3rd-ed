@@ -73,7 +73,9 @@ class SettingsTableViewController: UITableViewController {
         
         // Prepare the notification content
         let content = UNMutableNotificationContent()
-        content.title = "Take a selfie!"
+        // BEGIN localised_reminder
+        content.title = NSString.localizedUserNotificationString(forKey: "Take a selfie!", arguments: nil)
+        // END localised_reminder
         
         // Create date components to represent "10AM" (without specifying a day)
         var dateComponents = DateComponents()

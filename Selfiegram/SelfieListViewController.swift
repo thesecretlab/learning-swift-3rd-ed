@@ -59,7 +59,8 @@ class SelfieListViewController: UITableViewController {
         }
         catch let error
         {
-            showError(message: "Failed to load selfies: \(error.localizedDescription)")
+            let errorMessage = NSLocalizedString("Failed to load selfies:", comment: "error message will be appended")
+            showError(message: "\(errorMessage) \(error.localizedDescription)")
         }
         
         if let split = splitViewController
@@ -92,7 +93,10 @@ class SelfieListViewController: UITableViewController {
     func newSelfieTaken(image : UIImage)
     {
         // Create a new image
-        let newSelfie = Selfie(title: "New Selfie")
+        // BEGIN localised_title
+        let selfieTitle = NSLocalizedString("New Selfie", comment: "default name for a newly-created selfie")
+        let newSelfie = Selfie(title: selfieTitle)
+        // END localised_title
         
         // Store the image
         newSelfie.image = image
@@ -111,7 +115,8 @@ class SelfieListViewController: UITableViewController {
         }
         catch let error
         {
-            showError(message: "Can't save photo: \(error)")
+            let errorMessage = NSLocalizedString("Can't save photo:", comment: "error message will be appended")
+            showError(message: "\(errorMessage) \(error)")
             return
         }
         
@@ -187,13 +192,15 @@ class SelfieListViewController: UITableViewController {
     func showError(message : String)
     {
         // Create an alert controller, with the message we received
-        let alert = UIAlertController(title: "Error",
+        let alertTitle = NSLocalizedString("Error", comment: "The title of an error message popup")
+        let alert = UIAlertController(title: alertTitle,
                                       message: message,
                                       preferredStyle: .alert)
         
         // Add an action to it - it won't do anything, but
         // doing this means that it will have a button to dismiss it
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let actionTitle = NSLocalizedString("OK", comment: "Button confirmation label")
+        let action = UIAlertAction(title: actionTitle, style: .default, handler: nil)
         alert.addAction(action)
         
         // Show the alert and its message
@@ -258,7 +265,8 @@ class SelfieListViewController: UITableViewController {
         if let interval =
             timeIntervalFormatter.string(from: selfie.created, to: Date())
         {
-            cell.detailTextLabel?.text = "\(interval) ago"
+            let agoText = NSLocalizedString("ago", comment: "to be appened to a measure of time, such as 'ten seconds ago'")
+            cell.detailTextLabel?.text = "\(interval) \(agoText)"
         }
         else
         {
@@ -280,12 +288,14 @@ class SelfieListViewController: UITableViewController {
     // BEGIN selfie_list_editActionsForRowAt
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let share = UITableViewRowAction(style: .normal, title: "Share")
+        let shareActionTitle = NSLocalizedString("Share", comment: "title of a button that shares a selfie")
+        let share = UITableViewRowAction(style: .normal, title: shareActionTitle)
         { (action, indexPath) in
         
             guard let image = self.selfies[indexPath.row].image else
             {
-                self.showError(message: "Unable to share selfie without an image")
+                let errorMessage = NSLocalizedString("Unable to share selfie without an image", comment: "Error mesage to be displayed when failing to share an image")
+                self.showError(message: errorMessage)
                 return
             }
             let activity = UIActivityViewController(activityItems: [image],
@@ -295,7 +305,8 @@ class SelfieListViewController: UITableViewController {
         }
         share.backgroundColor = self.view.tintColor
         
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete")
+        let deleteActionTitle = NSLocalizedString("Delete", comment: "title of a button that deletes a selfie")
+        let delete = UITableViewRowAction(style: .destructive, title: deleteActionTitle)
         { (action, indexPath) in
             // Get the object from the content array
             let selfieToRemove = self.selfies[indexPath.row]
@@ -313,7 +324,8 @@ class SelfieListViewController: UITableViewController {
             }
             catch
             {
-                self.showError(message: "Failed to delete \(selfieToRemove.title).")
+                let errorMessage = NSLocalizedString("Failed to delete", comment: "title of the selfie that was deleted to be appended")
+                self.showError(message: "\(errorMessage) \(selfieToRemove.title).")
             }
         }
         

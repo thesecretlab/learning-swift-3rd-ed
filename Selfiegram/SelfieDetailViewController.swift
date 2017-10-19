@@ -71,11 +71,15 @@ class SelfieDetailViewController: UIViewController {
         guard let image = self.selfie?.image else {
             
             // pop up an alert dialogue letting us know it has failed
-            let alert = UIAlertController(title: "Error",
-                                          message: "Unable to share selfie without an image",
+            let alertTitle = NSLocalizedString("Error", comment: "The title of an error message popup")
+            let errorMessage = NSLocalizedString("Unable to share selfie without an image", comment: "Error mesage to be displayed when failing to share an image")
+            let actionTitle = NSLocalizedString("OK", comment: "Button confirmation label")
+            
+            let alert = UIAlertController(title: alertTitle,
+                                          message: errorMessage,
                                           preferredStyle: .alert)
             
-            let action = UIAlertAction(title: "OK",
+            let action = UIAlertAction(title: actionTitle,
                                        style: .default,
                                        handler: nil)
             alert.addAction(action)

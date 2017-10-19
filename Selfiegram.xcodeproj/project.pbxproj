@@ -67,6 +67,7 @@
 		337C3D471F678092009A64FD /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		33AE6A661F86FA98006D9971 /* CaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		33BD72F61F95A24F003B1A0E /* EditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewController.swift; sourceTree = "<group>"; };
+		33BD72FA1F985F22003B1A0E /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.otf"; sourceTree = "<group>"; };
 		33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster_1.3.otf; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		3326CDCF1F414F800084FDB3 /* Selfiegram */ = {
 			isa = PBXGroup;
 			children = (
+				33BD72FA1F985F22003B1A0E /* Localizable.strings */,
 				33D8D32A1F845339009DD425 /* Theme.swift */,
 				33D8D3261F834CD3009DD425 /* Fonts */,
 				3326CDD01F414F800084FDB3 /* AppDelegate.swift */,
