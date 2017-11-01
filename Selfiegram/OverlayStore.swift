@@ -7,44 +7,44 @@
 //
 
 import Foundation
-// BEGIN overlay_import
 import UIKit.UIImage
-// END overlay_import
 
-// BEGIN overlay_information_struct
+/// Holds names of the images that comprise an overlay.
+/// Used to load the images later shown to the user
 struct OverlayInformation: Codable {
     let icon : String
     let leftImage : String
     let rightImage : String
 }
-// END overlay_information_struct
 
-// BEGIN overlay_error
+/// Different types of errors that can occur with an overlay.
+/// There are two possible issues:
+/// * unable to load image data
+/// * unable to convert image data into an image
 enum OverlayManagerError: Error {
     case noDataLoaded
     case cannotParseData(underlyingError: Error)
 }
-// END overlay_error
 
-// BEGIN overlay_mananger_class
+/// Singleton responsible for downloading and handling overlay images.
 final class OverlayManager {
-    // BEGIN overlay_manager_shared
+    /// The singleton instance property, is the interface into this class
     static let shared = OverlayManager()
-    // END overlay_manager_shared
     
-    // BEGIN overlay_managed_list
+    /// the list of all known overlays
     typealias OverlayList = [OverlayInformation]
     private var overlayInfo : OverlayList
-    // END overlay_managed_list
     
-    // BEGIN overlay_manager_urls
+    /// the base URL where overlay information and images can be found.
+    /// Used to build up the specific URLs for images and data files.
     static let downloadURLBase = URL(string: "https://raw.githubusercontent.com/"
         + "thesecretlab/learning-swift-3rd-ed/master/Data/")!
+    /// the URL to the JSON file that describes all the different overlays
     static let overlayListURL = URL(string: "overlays.json",
                                     relativeTo: OverlayManager.downloadURLBase)!
-    // END overlay_manager_urls
     
-    // BEGIN overlay_manager_cache_url
+    /// the URL of the cache folder.
+    /// This is where overlay images and data will be saved after download
     static var cacheDirectoryURL : URL {
         guard let cacheDirectory =
             FileManager.default.urls(for: .cachesDirectory,
@@ -53,24 +53,29 @@ final class OverlayManager {
         }
         return cacheDirectory
     }
+    /// the URL of the cached JSON file that describes the overlays.
+    /// will be propogated with information from overlayListURL
     static var cachedOverlayListURL : URL {
         return cacheDirectoryURL.appendingPathComponent("overlays.json", isDirectory: false)
     }
-    // END overlay_manager_cache_url
     
-    // BEGIN overlay_manager_asset_url
-    // Returns the URL for downloading a named image file.
+    /// creates a URL for a specific file to then later be downloaded.
+    /// - parameter assetName: the name of the asset to be downloaded
+    /// - returns: the URL to be used for downloading the asset
     func urlForAsset(named assetName: String) -> URL? {
         return URL(string: assetName, relativeTo: OverlayManager.downloadURLBase)
     }
     
-    // Returns the URL for the cached version of an image file.
+    /// creates a URL for a specific file that has already been downloaded.
+    /// Functionally identical to the above, but uses the cache directory instead of the download directly to build its URL.
+    /// - parameter assetName: the name of the cached asset
+    /// - returns: the URL that points to the cached asset
     func cachedUrlForAsset(named assetName: String) -> URL? {
         return URL(string: assetName, relativeTo: OverlayManager.cacheDirectoryURL)
     }
-    // END overlay_manager_asset_url
     
-    // BEGIN overlay_manager_init
+    /// Base initialiser for the class.
+    /// Sets up overlayInfo property to have the cached information if it exists.
     init() {
         do {
             let overlayListData = try Data(contentsOf: OverlayManager.cachedOverlayListURL)
@@ -80,15 +85,15 @@ final class OverlayManager {
             self.overlayInfo = []
         }
     }
-    // END overlay_manager_init
     
-    // BEGIN overlay_availableOverlays
+    /// Turns the list of overlay information into overlays.
+    /// - returns: an array of overlay objects ready to be displayed
     func availableOverlays() -> [Overlay] {
         return overlayInfo.flatMap { Overlay(info: $0) }
     }
-    // END overlay_availableOverlays
     
-    // BEGIN overlay_refresh
+    /// Downloads all overlays and recaches them
+    /// - parameter completion: the closure to be run when download completes
     func refreshOverlays(completion: @escaping (OverlayList?, Error?) -> Void) {
         // Create a data task to download it.
         URLSession.shared.dataTask(with: OverlayManager.overlayListURL) { (data, response, error) in
@@ -99,7 +104,7 @@ final class OverlayManager {
                 completion(nil, error)
                 return
             }
-            
+            // ensuring we have data
             guard let data = data else {
                 completion(nil, OverlayManagerError.noDataLoaded)
                 return
@@ -128,14 +133,13 @@ final class OverlayManager {
             
             }.resume()
     }
-    // END overlay_refresh
     
-    // BEGIN overlay_image_download
-    // A group for coordinating multiple simultaneous downloads.
+    /// A dispatch group for coordinating the multiple simultaneous downloads we'll be using to download overlay information and images from the server.
     private let loadingDispatchGroup = DispatchGroup()
     
-    // Downloads all assets used by overlays. If 'refresh' is true, the list of overlays
-    // is updated first.
+    /// Downloads all assets used by overlays
+    /// - parameter refresh: if true the list of overlays is first refreshed
+    /// - parameter completion: the handler to run once the download has finished
     func loadOverlayAssets(refresh : Bool = false, completion: @escaping () -> Void) {
         
         // If we're told to refresh, then do that, and re-run this function with 'refresh' set to false
@@ -209,25 +213,23 @@ final class OverlayManager {
             completion()
         }
     }
-    // END overlay_image_download
 }
-// END overlay_mananger_class
 
-// BEGIN overlay_struct
-// An Overlay is a container for the images used to present
-// an eyebrow choice to the user.
+/// Container object for the three images that make up an overlay.
+/// Intended to be displayed to the user and not stored
 struct Overlay {
     
-    // The image to show in the list of eyebrow choices
+    /// The image to show in the list of eyebrow choices to the user
     let previewIcon: UIImage
     
-    // The images to draw on top of the left and right eyebrows
+    /// The image to draw on top of the left eyebrow
     let leftImage : UIImage
+    /// The image to draw on top of the right eyebrow
     let rightImage : UIImage
     
-    // Creates an Overlay given the names of images to use.
-    // The images must be downloaded and stored in the cache,
-    // or this initialiser will return nil.
+    /// Failiable initialiser, creates an Overlay given the names of images to use.
+    /// The images must be already downloaded and stored in the cache, or this initialiser will return nil.
+    /// - parameter info: the information necessary to create the overlay images
     init?(info: OverlayInformation) {
         // Construct the URLs that would point to the cached images.
         guard
@@ -251,4 +253,3 @@ struct Overlay {
         self.rightImage = rightImage
     }
 }
-// END overlay_struct

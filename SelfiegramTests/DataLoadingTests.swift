@@ -7,9 +7,7 @@
 //
 
 import XCTest
-// BEGIN overlay_tests_import
 @testable import Selfiegram
-// END overlay_tests_import
 
 class DataLoadingTests: XCTestCase {
     
@@ -17,7 +15,6 @@ class DataLoadingTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        // BEGIN overlay_tests_setup
         // Remove all cached data
         let cacheURL = OverlayManager.cacheDirectoryURL
         
@@ -42,7 +39,6 @@ class DataLoadingTests: XCTestCase {
         if !complete {
             XCTFail("Failed to delete contents of cache")
         }
-        // END overlay_tests_setup
     }
     
     override func tearDown() {
@@ -50,7 +46,6 @@ class DataLoadingTests: XCTestCase {
         super.tearDown()
     }
     
-    // BEGIN overlay_tests_none
     func testNoOverlaysAvailable() {
         
         // Arrange
@@ -63,10 +58,8 @@ class DataLoadingTests: XCTestCase {
         XCTAssertEqual(availableOverlays.count, 0)
         
     }
-    // END overlay_tests_none
     
     // The overlay manager can download updated information about the available overlays
-    // BEGIN overlay_tests_info
     func testGettingOverlayInfo() {
         
         // Arrange
@@ -89,9 +82,7 @@ class DataLoadingTests: XCTestCase {
         XCTAssertNotNil(loadedInfo)
         XCTAssertNil(loadedError)
     }
-    // END overlay_tests_info
     
-    // BEGIN overlay_tests_download
     // The overlay manager can download overlay assets, making them available for use
     func testDownloadingOverlays() {
         
@@ -112,11 +103,8 @@ class DataLoadingTests: XCTestCase {
         // Assert
         XCTAssertNotEqual(availableOverlays.count, 0)
     }
-    // END overlay_tests_download
     
-    // BEGIN overlay_tests_cache
-    // When the overlay manager is created, it has access to all previously cached
-    // overlays.
+    // When the overlay manager is created, it has access to all previously cached overlays.
     func testDownloadedOverlaysAreCached() {
         
         // Arrange
@@ -145,5 +133,4 @@ class DataLoadingTests: XCTestCase {
         XCTAssertEqual(cacheTestOverlayManager.availableOverlays().count,
                        downloadingOverlayManager.availableOverlays().count)
     }
-    // END overlay_tests_cache
 }

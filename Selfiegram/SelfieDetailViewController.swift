@@ -7,30 +7,36 @@
 //
 
 import UIKit
-// BEGIN selfie_detail_import
 import MapKit
-// END selfie_detail_import
 
+/// Responsible for showing a single selfie in detail
+/// From here:
+/// * selfie title can be edited
+/// * Selfie information can be viewed
 class SelfieDetailViewController: UIViewController {
 
+    /// displays the title of the selfie, can be edited
     @IBOutlet weak var selfieNameField: UITextField!
+    /// displays the date the selfie was created
     @IBOutlet weak var dateCreatedLabel: UILabel!
+    /// displays the photo associated with the selfie
     @IBOutlet weak var selfieImageView: UIImageView!
     
-    // BEGIN selfie_detail_properties
+    /// the preview map showing where the selfie was taken.
+    /// Only appears when the selfie has a location
     @IBOutlet weak var mapview: MKMapView!
-    // END selfie_detail_properties
     
-    // BEGIN selfie_detail_item
+    /// the selfie being shown in detail.
+    /// When changed it triggers an updates to the view
     var selfie: Selfie? {
         didSet {
             // Update the view.
             configureView()
         }
     }
-    // END selfie_detail_item
     
-    // BEGIN selfie_detail_update
+    /// called when the done button in the navigation bar is tapped
+    /// updates the selfie with the store
     @IBAction func doneButtonTapped(_ sender: Any)
     {
         self.selfieNameField.resignFirstResponder();
@@ -52,21 +58,19 @@ class SelfieDetailViewController: UIViewController {
         
         try? SelfieStore.shared.save(selfie: selfie)
     }
-    // END selfie_detail_update
     
-    // BEGIN selfie_detail_formatter
-    // The date formatter used to format the time and date of the photo
-    // It's created in a closure like this so that when it's used, it's
-    // already configured the way we need it
+    /// The date formatter used to format the time and date of the photo.
+    /// It's created in a closure like this so that when it's used, it's
+    /// already configured the way we need it
     let dateFormatter = { () -> DateFormatter in
         let d = DateFormatter()
         d.dateStyle = .short
         d.timeStyle = .short
         return d
     }()
-    // END selfie_detail_formatter
     
-    // BEGIN selfie_detail_sharing
+    /// called when the user taps on the share button in the navigation bar.
+    /// Creates an activity view controller to perform the sharing or an error display otherwise
     @IBAction func shareSelfie(_ sender: Any) {
         guard let image = self.selfie?.image else {
             
@@ -78,7 +82,6 @@ class SelfieDetailViewController: UIViewController {
             let alert = UIAlertController(title: alertTitle,
                                           message: errorMessage,
                                           preferredStyle: .alert)
-            
             let action = UIAlertAction(title: actionTitle,
                                        style: .default,
                                        handler: nil)
@@ -88,14 +91,14 @@ class SelfieDetailViewController: UIViewController {
             
             return
         }
-        
+        // creating the sharing activity view controller
         let activity = UIActivityViewController(activityItems: [image],
                                                 applicationActivities: nil)
-        
+        // presenting it
         self.present(activity, animated: true, completion: nil)
     }
-    // END selfie_detail_sharing
     
+    /// sets the various UI elements to display their information from the selfie
     func configureView()
     {
         guard let selfie = selfie else
@@ -111,20 +114,20 @@ class SelfieDetailViewController: UIViewController {
             return
         }
         
+        // setting each element to display their relevant selfie information
         selfieNameField.text = selfie.title
         dateCreatedLabel.text = dateFormatter.string(from: selfie.created)
         selfieImageView.image = selfie.image
         
-        // BEGIN selfie_detail_configure
         if let position = selfie.position
         {
             self.mapview.setCenter(position.location.coordinate, animated: false)
             mapview.isHidden = false
         }
-        // END selfie_detail_configure
     }
     
-    // BEGIN selfie_detail_expandMap
+    /// called when the user taps on the preview map.
+    /// Moves to the Maps app itself.
     @IBAction func expandMap(_ sender: Any)
     {
         if let coordinate = self.selfie?.position?.location
@@ -143,7 +146,6 @@ class SelfieDetailViewController: UIViewController {
             item.openInMaps(launchOptions: options)
         }
     }
-    // END selfie_detail_expandMap
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,6 +157,4 @@ class SelfieDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 }
-

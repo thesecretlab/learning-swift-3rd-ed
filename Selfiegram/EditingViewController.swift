@@ -7,25 +7,22 @@
 //
 
 import UIKit
-// BEGIN editing_controller_import
 import Vision
-// END editing_controller_import
 
-// An image view that shows the preview icon of an overlay.
-// When tapped, it calls a closure it stores as a property.
-// BEGIN editing_overlay_view_class
+/// A specialised imageview for showing the preview icon of an overlay.
+/// When tapped it calls a closure it stores as a property.
 class OverlaySelectionView : UIImageView {
     
-    // BEGIN editing_overlay_view_property
+    /// the overlay to display
     let overlay : Overlay
-    // END editing_overlay_view_property
     
-    // BEGIN editing_overlay_view_handler
     typealias TapHandler = () -> Void
+    /// the closure to run when the view is tapped
     let tapHandler : TapHandler
-    // END editing_overlay_view_handler
     
-    // BEGIN editing_overlay_view_init
+    /// Creates a new OverlaySelectionView
+    /// - parameter overlay: the overlay to preview
+    /// - parameter tapHandler: the closure to run when tapped
     init(overlay: Overlay, tapHandler: @escaping TapHandler) {
         
         self.overlay = overlay
@@ -43,79 +40,78 @@ class OverlaySelectionView : UIImageView {
                                                    action: tappedMethod)
         self.addGestureRecognizer(tapRecognizer)
     }
-    // END editing_overlay_view_init
     
-    // BEGIN editing_overlay_view_bad_init
+    // necessary for protocol conformance.
+    // Will never be used or called.
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // END editing_overlay_view_bad_init
     
-    // BEGIN editing_overlay_view_tap
+    /// function for the gesture recogniser to call when the view is tapped
     @objc func tapped(tap: UITapGestureRecognizer) {
         self.tapHandler()
     }
-    // END editing_overlay_view_tap
 }
-// END editing_overlay_view_class
 
+/// Responsible for editing a photo
+/// From here:
+/// * photo can be saved
+/// * overlays can be previewed
+/// * selfie creation can be aborted
 class EditingViewController: UIViewController {
     
-    // BEGIN editing_controller_helpers
-    // There are two kinds of eyebrows: the left, and the right
+    /// Holds the type of eyebrow.
+    /// There are two kinds of eyebrows: the left, and the right
     enum EyebrowType { case left, right }
     
     // An eyebrow is a combination of its type and its position
     typealias EyebrowPosition = (type: EyebrowType, position: CGPoint)
     
-    // DetectionResult represents either a successful detection or a failure;
-    // it uses associated values to carry additional context
+    /// DetectionResult represents either a successful detection or a failure.
+    /// It uses associated values to carry additional context
     enum DetectionResult {
         case error(Error)
         case success([EyebrowPosition])
     }
-    // We have one type of error: we didn't find any eyebrows
+    /// We have one type of error: we didn't find any eyebrows
     enum DetectionError : Error { case noResults }
     
     // A detection completion is a closure that's used to receive a detection result
     typealias DetectionCompletion = (DetectionResult) -> Void
-    // END editing_controller_helpers
 
+    /// the image view showing the selfie photo
     @IBOutlet weak var imageView: UIImageView!
+    /// the stackview showing the overlay previews
     @IBOutlet weak var optionsStackView: UIStackView!
     
-    // BEGIN editing_controller_images
-    // The image we received from the CaptureViewController.
+    /// The image we received from the CaptureViewController.
     var image : UIImage?
     
-    // The image that we'll create by drawing eyebrows on top.
+    /// The image that we'll create by drawing eyebrows on top.
     var renderedImage : UIImage?
-    // END editing_controller_images
     
-    // BEGIN editing_controller_eyebrow_list
-    // The list of eyebrow positions we detected.
+    /// The list of eyebrow positions we detected.
     var eyebrows : [EyebrowPosition] = []
-    // END editing_controller_eyebrow_list
     
-    // BEGIN editing_controller_overlay_properties
+    /// all overlays we know about
     var overlays : [Overlay] = []
     
+    /// the currently selected overlay.
+    /// Will be nil initially
     var currentOverlay : Overlay? = nil {
         didSet {
             guard currentOverlay != nil else { return }
             redrawImage()
         }
     }
-    // END editing_controller_overlay_properties
     
-    // BEGIN editing_controller_handler_property
+    /// the completion handler to run after the user finishes editing.
+    /// Comes from the CaptureViewController
     var completion : CaptureViewController.CompletionHandler?
-    // END editing_controller_handler_property
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // BEGIN editing_controller_viewDidLoad_1
         guard let image = image else {
             self.completion?(nil)
             return
@@ -125,6 +121,7 @@ class EditingViewController: UIViewController {
         // setting up the overlay information
         overlays = OverlayManager.shared.availableOverlays()
         
+        // adding each overlay to the stack view
         for overlay in overlays {
             
             let overlayView = OverlaySelectionView(overlay: overlay) {
@@ -141,24 +138,23 @@ class EditingViewController: UIViewController {
                                               target: self,
                                               action: #selector(done))
         navigationItem.rightBarButtonItem = addSelfieButton
-        // END editing_controller_viewDidLoad_1
         
-        // BEGIN editing_controller_viewDidLoad_2
+        // beginning eyebrow detection
         self.detectEyebrows(image: image, completion: { (eyebrows) in
             self.eyebrows = eyebrows
         })
-        // END editing_controller_viewDidLoad_2
     }
     
-    // BEGIN editing_controller_done_func
+    /// called when the user taps the done button.
+    /// Runs the completion handler to unwind back to the selfie list
     @objc func done(){
         let imageToReturn = self.renderedImage ?? self.image
         
         self.completion?(imageToReturn)
     }
-    // END editing_controller_done_func
     
-    // BEGIN editing_controller_redraw
+    /// draws the currently selected overlays eyesbrows onto the position of the eyebrows on the image
+    /// if no overlay has been selected the method returns without editing the image
     func redrawImage(){
         // Ensure that we have an overlay to draw, and an image to draw it on
         guard let overlay = self.currentOverlay,
@@ -210,9 +206,12 @@ class EditingViewController: UIViewController {
         // Also display the image in the image view
         self.imageView.image = self.renderedImage
     }
-    // END editing_controller_redraw
     
-    // BEGIN editing_controller_detect_eyebrows
+    /// detects eyebrows in the image.
+    /// Is a wrapper around detectFaceLandmarks
+    /// Runs a completion handler upon detection.
+    /// - parameter image: the image to detect eyebrows within
+    /// - parameter completion: closure to run upon detecting eyebrows
     func detectEyebrows(image: UIImage, completion: @escaping ([EyebrowPosition])->Void) {
         detectFaceLandmarks(image: image) { (result) in
             switch result {
@@ -225,9 +224,11 @@ class EditingViewController: UIViewController {
             }
         }
     }
-    // END editing_controller_detect_eyebrows
     
-    // BEGIN editing_controller_eyebrow_handler
+    /// takes in a valid request and identifies the eyebrow points from it
+    /// - parameter request: the image analysis request to identify eyebrows within
+    /// - parameter imageSize: the size of the image being analysed, used to map the eyebrow position to the image position
+    /// - parameter completion: the handler to run after identifying eyebrows
     private func locateEyebrowsHandler(_ request: VNRequest,
                                        imageSize: CGSize,
                                        completion: DetectionCompletion) {
@@ -238,10 +239,12 @@ class EditingViewController: UIViewController {
             return
         }
         
-        // Landmark regions contain multiple points, which describe their contour. In
-        // this app, we just want to know where to stick the eyebrow image, so we don't
-        // need the whole contour, just an idea of 'where' the eyebrow is. We can get that
-        // by taking the average of all points. This internal function does that.
+        /// Landmark regions contain multiple points, which describe their contour. In
+        /// this app, we just want to know where to stick the eyebrow image, so we don't
+        /// need the whole contour, just an idea of 'where' the eyebrow is. We can get that
+        /// by taking the average of all points. This internal function does that.
+        /// - parameter landmark: the specific landmark we are looking for, will always be an eyebrow but will work for any facial landmark.
+        /// - returns: The point of the eyebrow landmark
         func averagePosition(for landmark: VNFaceLandmarkRegion2D) -> CGPoint {
             
             // Get all of the points in the image
@@ -277,10 +280,10 @@ class EditingViewController: UIViewController {
         // We're done! Pass a value indicating success, with its associated results.
         completion(.success(results))
     }
-    // END editing_controller_eyebrow_handler
     
-    // BEGIN editing_controller_detect_landmarks
-    // Given an image, detect eyebrows and pass it back to a completion handler
+    /// Given an image, detect eyebrows and pass it back to a completion handler
+    /// - parameter image: the image to detect landmarks within
+    /// - parameter completion: the closure to run once detection is complete
     func detectFaceLandmarks(image: UIImage, completion: @escaping DetectionCompletion) {
         
         // Prepare a request to detect face landmarks (eg facial features like
@@ -313,7 +316,6 @@ class EditingViewController: UIViewController {
         }
         
     }
-    // END editing_controller_detect_landmarks
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

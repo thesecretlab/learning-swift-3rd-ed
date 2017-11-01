@@ -8,25 +8,32 @@
 
 import Foundation
 import UIKit.UIImage
-// BEGIN model_imports
 import CoreLocation.CLLocation
-// END model_imports
 
-// BEGIN model_selfie_class_initial
+/// Container object for the Selfie and all the data that combine to make a selfie.
+/// Intended to be displayed to the user and stored locally.
 class Selfie : Codable
 {
-    // BEGIN model_coordinate
+    /// A coordinate class to hold latitude and longitude.
+    /// Effectively a Codable wrapper to CLLocation.
+    /// Location data will come from CoreLocation, be converted and saved.
+    /// When used it will be loaded from disk and converted back to a CLLocation.
     struct Coordinate : Codable, Equatable
     {
+        /// The latitude of the coordinate.
+        /// Contains the same data as a CLLocationCoordinate2D
         var latitude : Double
+        /// The longitude of the coordinate.
+        /// Contains the same data as a CLLocationCoordinate2D
         var longitude : Double
         
-        // required equality method to conform to the Equatable protocol
+        /// required equality method to conform to the Equatable protocol
         public static func == (lhs: Selfie.Coordinate, rhs: Selfie.Coordinate) -> Bool
         {
             return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
         }
         
+        /// computed property to change the coordinate into a CoreLocation location
         var location : CLLocation
         {
             get
@@ -40,34 +47,29 @@ class Selfie : Codable
             }
         }
         
+        /// Initialiser that strips the lat/lon out of the location and saves it into the properties.
+        /// - parameter location: The location will come from CoreLocation
         init (location : CLLocation)
         {
             self.latitude = location.coordinate.latitude
             self.longitude = location.coordinate.longitude
         }
     }
-    // END model_coordinate
     
-    // BEGIN model_selfie_const_properties
-    // When it was created.
+    /// When it was created.
     let created : Date
     
-    // A unique ID, used to link this selfie to its image on disk.
+    /// A unique ID, used to link this selfie to its image on disk.
     let id : UUID
-    // END model_selfie_const_properties
     
-    // BEGIN model_selfie_var_properties
-    // The name of this selfie
+    /// The name of this selfie
     var title = "New Selfie!"
-    // END model_selfie_var_properties
     
-    // BEGIN model_selfie_position
-    // the location the selfie was taken
+    /// The location the selfie was taken
     var position : Coordinate?
-    // END model_selfie_position
     
-    // BEGIN model_selfie_computed
-    // the image on disk for this selfie
+    /// The image on disk for this selfie.
+    /// Can fail to be set if the SelfieStore is unable to save the image to disk.
     var image : UIImage?
     {
         get
@@ -79,9 +81,10 @@ class Selfie : Codable
             try? SelfieStore.shared.setImage(id: self.id, image: newValue)
         }
     }
-    // END model_selfie_computed
     
-    // BEGIN model_selfie_init
+    /// Creates a new selfie with the title parameter as the title of the selfie.
+    /// Initialises both created and id with relevant values.
+    /// - parameter title: the name of the new selfie
     init(title: String)
     {
         self.title = title
@@ -91,37 +94,44 @@ class Selfie : Codable
         // a new UUID
         self.id = UUID()
     }
-    // END model_selfie_init
 }
-// END model_selfie_class_initial
 
-// BEGIN selfie_error
+/// Different types of errors that can occur with a selfie.
+/// There are only one possible issue:
+/// * unable to save image data
 enum SelfieStoreError : Error
 {
     case cannotSaveImage(UIImage?)
 }
-// END selfie_error
 
-// BEGIN selfie_store_class
+/// Singleton manager of the selfies.
+/// Responsible for:
+/// * Saving encoded selfies to disk
+/// * Loading selfies from disk
+/// * Saving images to disk
+/// * Loading images to disk
+/// * Deleting selfies and associated images
+/// * Caches images once loaded
 final class SelfieStore
 {
-    // BEGIN shared_property
+    /// The shared instance used as part of the singleton.
+    /// Is the primary interface into the class.
     static let shared = SelfieStore()
-    // END shared_property
     
-    // BEGIN imageCache_property
+    /// The image cache.
+    /// As selfies are loaded their images are cached here for faster retrieval.
+    /// Will be lost whenever the application is exited.
+    /// The disk form is always the canonical version.
     private var imageCache : [UUID:UIImage] = [:]
-    // END imageCache_property
     
-    // BEGIN documents_property
+    /// Location of the documents directory.
+    /// Used to save and load selfies and their images.
     var documentsFolder : URL
     {
         return FileManager.default.urls(for: .documentDirectory,
                                         in: .allDomainsMask).first!
     }
-    // END documents_property
     
-    // BEGIN store_get_image
     /// Gets an image by ID. Will be cached in memory for future lookups.
     /// - parameter id: the id of the selfie who's image you are after
     /// - returns: the image for that selfie or nil if it doesn't exist
@@ -154,9 +164,7 @@ final class SelfieStore
         // Return the loaded image
         return image
     }
-    // END store_get_image
     
-    // BEGIN store_set_image
     /// Saves an image to disk.
     /// - parameter id: the id of the selfie you want this image associated with
     /// - parameter image: the image you want saved
@@ -192,9 +200,7 @@ final class SelfieStore
         // removing the entry from the cache dictionary.)
         imageCache[id] = image
     }
-    // END store_set_image
     
-    // BEGIN store_list
     /// Returns a list of Selfie objects loaded from disk.
     /// - returns: an array of all selfies previously saved
     /// - Throws: `SelfieStoreError` if it fails to load a selfie correctly from disk
@@ -211,9 +217,7 @@ final class SelfieStore
             .map { try Data(contentsOf: $0) }
             .map { try JSONDecoder().decode(Selfie.self, from: $0) }
     }
-    // END store_list
     
-    // BEGIN store_delete_selfie
     /// Deletes a selfie, and its corresponding image, from disk.
     /// This function simply takes the ID from the Selfie you pass in,
     /// and gives it to the other version of the delete function.
@@ -249,9 +253,7 @@ final class SelfieStore
         // wiping the image from the cache if its there
         imageCache[id] = nil
     }
-    // END store_delete_selfie
     
-    // BEGIN store_load_save
     /// Attempts to load a selfie from disk.
     /// - parameter id: the id property of the Selfie object you want loaded from disk
     /// - returns: The selfie with the matching id, otherwise nil
@@ -289,4 +291,3 @@ final class SelfieStore
         try selfieData.write(to: destinationURL)
     }
 }
-// END selfie_store_class

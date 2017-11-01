@@ -7,12 +7,13 @@
 //
 
 import Foundation
-// BEGIN theme_import
 import UIKit
-// END theme_import
 
-// BEGIN theme_font_ext
 extension UIFont {
+    /// returns the first font that matches the font name
+    /// - parameter familyName: the font family name you are after, eg Lobster
+    /// - parameter size: the size of the font, defaults to system font size if not specified
+    /// = parameter variantName: the variant of the font desired, such as bold
     convenience init? (familyName: String, size: CGFloat = UIFont.systemFontSize, variantName: String? = nil) {
         // Note! This is how you'd figure out the internal font name
         // using code. However, it introduces a bug if there's more
@@ -33,14 +34,15 @@ extension UIFont {
         self.init(name: name, size: size)
     }
 }
-// END theme_font_ext
 
-// BEGIN theme_struct
+/// Container struct for the theme.
+/// Should only be called through the static apply function.
 struct Theme {
-    // BEGIN theme_apply
+    /// Applies the theme to the application,
+    /// sets fonts and colours.
+    /// To be called on application launch.
     static func apply() {
         
-        // BEGIN theme_font
         guard let headerFont = UIFont(familyName: "Lobster", size: UIFont.systemFontSize * 2) else {
             NSLog("Failed to load header font")
             return
@@ -50,15 +52,11 @@ struct Theme {
             NSLog("Failed to load application font")
             return
         }
-        // END theme_font
         
-        // BEGIN theme_tinting
         let tintColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         
         UIApplication.shared.delegate?.window??.tintColor = tintColor
-        // END theme_tinting
         
-        // BEGIN theme_bulk
         let navBarLabel = UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
         
         let barButton = UIBarButtonItem.appearance()
@@ -82,8 +80,5 @@ struct Theme {
         barButton.setTitleTextAttributes([.font: primaryFont], for: .highlighted)
         
         buttonLabel.font = primaryFont
-        // END theme_bulk
     }
-    // END theme_apply
 }
-// END theme_struct

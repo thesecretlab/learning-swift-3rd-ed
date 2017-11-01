@@ -7,17 +7,12 @@
 //
 
 import XCTest
-// BEGIN testable_import
 @testable import Selfiegram
-// END testable_import
-// BEGIN test_import
 import CoreLocation
-// END test_import
 import UIKit
 
 class SelfieStoreTests: XCTestCase {
     
-    // BEGIN test_helper
     /// A helper function to create images with text being used as the image content
     /// - returns: an image containing a representation of the text
     /// - parameter text: the string you want rendered into the image
@@ -44,8 +39,7 @@ class SelfieStoreTests: XCTestCase {
         // (the ! means we either successfully get an image, or we crash)
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
-    // END test_helper
-    // BEGIN test_creation
+    
     func testCreatingSelfie()
     {
         // Arrange
@@ -67,8 +61,7 @@ class SelfieStoreTests: XCTestCase {
         
         XCTAssertEqual(selfieTitle, newSelfie.title)
     }
-    // END test_creation
-    // BEGIN test_image_save
+    
     func testSavingImage() throws
     {
         // Arrange
@@ -83,8 +76,7 @@ class SelfieStoreTests: XCTestCase {
         
         XCTAssertNotNil(loadedImage,"The image should be loaded.")
     }
-    // END test_image_save
-    // BEGIN test_load_selfie
+    
     func testLoadingSelfie() throws
     {
         // Arrange
@@ -105,8 +97,7 @@ class SelfieStoreTests: XCTestCase {
         XCTAssertEqual(loadedSelfie?.title, selfieTitle,
                        "The loaded selfie should have the same title")
     }
-    // END test_load_selfie
-    // BEGIN test_delete_selfie
+    
     func testDeletingSelfie() throws
     {
         // Arrange
@@ -126,9 +117,7 @@ class SelfieStoreTests: XCTestCase {
         XCTAssertNil(loadedSelfie, "deleted selfie should be nil")
         
     }
-    // END test_delete_selfie
     
-    // BEGIN test_location_selfie
     func testLocationSelfie()
     {
         // a location for Hobart
@@ -158,5 +147,4 @@ class SelfieStoreTests: XCTestCase {
         XCTAssertNotNil(loadedSelfie?.position)
         XCTAssertEqual(newSelfie.position, loadedSelfie?.position)
     }
-    // END test_location_selfie
 }

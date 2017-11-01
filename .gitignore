@@ -25,3 +25,22 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
+## Fastlane files
+
+# fastlane
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/#source-control
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+## Learning Swift 3rd Edition Files
+
+# Several of the Fastlane files contain data that is specific to our (the authors') version on the App Store, so we ignore them as well. In your apps, you wouldn't do this.
+
+fastlane/Appfile
+fastlane/metadata

@@ -7,17 +7,15 @@
 //
 
 import UIKit
-// BEGIN capture_view_import
 import AVKit
-// END capture_view_import
 
-// BEGIN capture_view_custom_class
+/// A custom UIView to display a camera preview
 class PreviewView : UIView {
-    // BEGIN capture_view_previewLayer
+    /// layer to show the camera content
     var previewLayer : AVCaptureVideoPreviewLayer?
-    // END capture_view_previewLayer
     
-    // BEGIN capture_view_setSession
+    /// takes an existing capture session and displays it onto previewLayer
+    /// - parameter session: the capture session to display
     func setSession(_ session: AVCaptureSession) {
         // Ensure that we only ever do this once for this view
         guard self.previewLayer == nil else {
@@ -42,37 +40,40 @@ class PreviewView : UIView {
         // Ensure that the sublayer is laid out
         self.setNeedsLayout()
     }
-    // END capture_view_setSession
     
-    // BEGIN capture_view_layout
     override func layoutSubviews() {
         previewLayer?.frame = self.bounds
     }
-    // END capture_view_layout
     
-    // BEGIN capture_view_layer_orientation
+    /// sets the previewLayer orientation
+    /// to be called when the device orientation changes
+    /// - parameter orientation: the new orientation for the previewLayer
     func setCameraOrientation(_ orientation : AVCaptureVideoOrientation) {
         previewLayer?.connection?.videoOrientation = orientation
     }
-    // END capture_view_layer_orientation
 }
-// END capture_view_custom_class
 
+/// Responsible for handling all camera related content.
+/// From here:
+/// * the camera can be previewed
+/// * a selfie photo can be taken
+/// * the editing view controller is called once a photo is taken
 class CaptureViewController: UIViewController {
 
-    // BEGIN capture_view_completion_handler
     typealias CompletionHandler = (UIImage?) -> Void
+    /// completion handler once the user has both taken the photo and finished editing it
     var completion : CompletionHandler?
-    // END capture_view_completion_handler
     
-    // BEGIN capture_view_avkit_properties
+    /// the current camera session
     let captureSession = AVCaptureSession()
+    /// the output of the camera.
+    /// To be used when taking a photo
     let photoOutput = AVCapturePhotoOutput()
-    // END capture_view_avkit_properties
     
+    /// the view responsible for showing the camera preview
     @IBOutlet weak var cameraPreview: PreviewView!
     
-    // BEGIN capture_view_orientation_property
+    /// maps the video orientation to the device orientation
     var currentVideoOrientation : AVCaptureVideoOrientation {
         let orientationMap : [UIDeviceOrientation:AVCaptureVideoOrientation] = [
             .portrait: .portrait,
@@ -87,9 +88,7 @@ class CaptureViewController: UIViewController {
         
         return videoOrientation
     }
-    // END capture_view_orientation_property
     
-    // BEGIN capture_view_viewDidLoad
     override func viewDidLoad() {
         let discovery = AVCaptureDevice.DiscoverySession(
             deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera],
@@ -128,16 +127,16 @@ class CaptureViewController: UIViewController {
         
         super.viewDidLoad()
     }
-    // END capture_view_viewDidLoad
     
-    // BEGIN capture_view_layout
     override func viewWillLayoutSubviews() {
+        // keep the video preview and device orientations together
         self.cameraPreview?.setCameraOrientation(currentVideoOrientation)
     }
-    // END capture_view_layout
     
+    /// called when the user taps on the camera preview
+    /// will take the current camera image and save this
+    /// - parameter sender: the object that triggered this event
     @IBAction func takeSelfie(_ sender: Any) {
-        // BEGIN capture_view_takeSelfie
         // Get a connection to the output
         guard let videoConnection = photoOutput.connection(with: AVMediaType.video) else {
             NSLog("Failed to get camera connection")
@@ -153,12 +152,10 @@ class CaptureViewController: UIViewController {
         // Begin capturing a photo; it will call photoOutput(_, didFinishProcessingPhoto:, error:)
         // when done
         photoOutput.capturePhoto(with: settings, delegate: self)
-        // END capture_view_takeSelfie
     }
+    /// called when the user exits the camera without taking a photo
     @IBAction func close(_ sender: Any) {
-        // BEGIN capture_view_close_button
         self.completion?(nil)
-        // END capture_view_close_button
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,7 +163,6 @@ class CaptureViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // BEGIN capture_view_segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destination = segue.destination as? EditingViewController else {
             fatalError("The destination view controller is not configured correctly.")
@@ -181,24 +177,22 @@ class CaptureViewController: UIViewController {
         destination.image = image
         destination.completion = self.completion
     }
-    // END capture_view_segue
     
-    // BEGIN capture_view_willappear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // restarting the session if necessary
         if !self.captureSession.isRunning {
             DispatchQueue.global(qos: .userInitiated).async {
                 self.captureSession.startRunning()
             }
         }
     }
-    // END capture_view_willappear
 }
 
-// BEGIN capture_view_extension
 extension CaptureViewController : AVCapturePhotoCaptureDelegate {
-    // BEGIN capture_view_extension_method
+    // called when AVKit has finished capturing the photo
+    // moves to the editing view controller once complete
     func photoOutput(_ output: AVCapturePhotoOutput,
                      didFinishProcessingPhoto photo: AVCapturePhoto,
                      error: Error?) {
@@ -206,16 +200,15 @@ extension CaptureViewController : AVCapturePhotoCaptureDelegate {
             NSLog("Failed to get the photo: \(error)")
             return
         }
-        
+        // collecting a JPEG from the camera
         guard let jpegData = photo.fileDataRepresentation(),
               let image = UIImage(data: jpegData) else {
                 NSLog("Failed to get image from encoded data")
                 return
         }
         
+        // seguing to the editing view controller
         self.captureSession.stopRunning()
         self.performSegue(withIdentifier: "showEditing", sender: image)
     }
-    // END capture_view_extension_method
 }
-// END capture_view_extension

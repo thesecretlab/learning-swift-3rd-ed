@@ -27,6 +27,7 @@
 		33D8D32C1F8465F3009DD425 /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */; };
 		33D8D32D1F8465F3009DD425 /* Quicksand-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3271F834D7E009DD425 /* Quicksand-Bold.otf */; };
 		33D8D32E1F8465F3009DD425 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */; };
+		68B470B11FA95145007DE96B /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B470B01FA95145007DE96B /* SnapshotHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		33D8D3281F834D8E009DD425 /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		33D8D3291F834DAF009DD425 /* Lobster_1.3.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster_1.3.otf; sourceTree = "<group>"; };
 		33D8D32A1F845339009DD425 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		68B470B01FA95145007DE96B /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 		3326CDF11F414F800084FDB3 /* SelfiegramUITests */ = {
 			isa = PBXGroup;
 			children = (
+				68B470B01FA95145007DE96B /* SnapshotHelper.swift */,
 				3326CDF21F414F800084FDB3 /* SelfiegramUITests.swift */,
 				3326CDF41F414F800084FDB3 /* Info.plist */,
 			);
@@ -339,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3326CDF31F414F800084FDB3 /* SelfiegramUITests.swift in Sources */,
+				68B470B11FA95145007DE96B /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

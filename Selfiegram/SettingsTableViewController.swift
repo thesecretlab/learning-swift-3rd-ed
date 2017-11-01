@@ -7,27 +7,30 @@
 //
 
 import UIKit
-// BEGIN settings_import
 import UserNotifications
-// END settings_import
 
-// BEGIN settings_enum
+/// List of keys for settings
 enum SettingsKey : String
 {
     case saveLocation
 }
-// END settings_enum
 
+/// Responsible for Selfiegram settings.
+/// From here:
+/// * location can be enabled or disabled
+/// * reminders can be enabled or disabled
 class SettingsTableViewController: UITableViewController {
 
+    /// the toggle switch for location setting
     @IBOutlet weak var locationSwitch: UISwitch!
+    /// the toggle switch for reminder notifications setting
     @IBOutlet weak var reminderSwitch: UISwitch!
     
-    // BEGIN settings_property
+    /// used to uniquely identify the notification in the noticiation centre
     private let notificationId = "SelfiegramReminder"
-    // END settings_property
     
-    // BEGIN settings_toggle_method
+    /// called when the user toggles the reminder switch.
+    /// sets the switch state based on notification permissions
     @IBAction func reminderSwitchToggled(_ sender: Any)
     {
         // Get the notification center.
@@ -60,9 +63,9 @@ class SettingsTableViewController: UITableViewController {
             current.removeAllPendingNotificationRequests()
         }
     }
-    // END settings_toggle_method
     
-    // BEGIN settings_add_notification
+    /// Queues a notification to the notification centre.
+    /// To be called by the reminderSwitchToggled method
     func addNotificationRequest()
     {
         // Get the notification center
@@ -73,9 +76,7 @@ class SettingsTableViewController: UITableViewController {
         
         // Prepare the notification content
         let content = UNMutableNotificationContent()
-        // BEGIN localised_reminder
         content.title = NSString.localizedUserNotificationString(forKey: "Take a selfie!", arguments: nil)
-        // END localised_reminder
         
         // Create date components to represent "10AM" (without specifying a day)
         var dateComponents = DateComponents()
@@ -95,9 +96,8 @@ class SettingsTableViewController: UITableViewController {
             self.updateReminderSwitch()
         })
     }
-    // END settings_add_notification
     
-    // BEGIN settings_update_switch
+    /// toggles the state of the reminder switch based on notification permissions.
     func updateReminderSwitch()
     {
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
@@ -128,9 +128,11 @@ class SettingsTableViewController: UITableViewController {
             }
         }
     }
-    // END settings_update_switch
     
-    // BEGIN settings_update_ui
+    /// sets the state of the reminder switch.
+    /// to be called by other methods, always runs on the main queue.
+    /// - parameter enabled: should the switch be enabled
+    /// - parameter active: should the switch be on
     private func updateReminderUI(enabled: Bool, active: Bool)
     {
         OperationQueue.main.addOperation {
@@ -138,8 +140,9 @@ class SettingsTableViewController: UITableViewController {
             self.reminderSwitch.isOn = active
         }
     }
-    // END settings_update_ui
     
+    /// called when the user toggles the location switch.
+    /// Adds this new state to the user defaults.
     @IBAction func locationSwitchToggled(_ sender: Any)
     {
         // Update the setting in UserDefaults.
@@ -152,9 +155,7 @@ class SettingsTableViewController: UITableViewController {
         // Make sure that the location switch is set correctly.
         locationSwitch.isOn = UserDefaults.standard.bool(forKey: SettingsKey.saveLocation.rawValue)
         
-        // BEGIN settings_viewDidLoad
         updateReminderSwitch()
-        // END settings_viewDidLoad
     }
 
     override func didReceiveMemoryWarning() {
