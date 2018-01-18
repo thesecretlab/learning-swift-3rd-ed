@@ -15,7 +15,7 @@ protocol HouseSecurityDelegate {
 class House {
     // The delegate can be any object that conforms
     // to the HouseSecurityDelegate protocol
-    weak var delegate : HouseSecurityDelegate?
+    var delegate : HouseSecurityDelegate?
     
     func burglarDetected() {
         // Check to see if the delegate is there, then call it

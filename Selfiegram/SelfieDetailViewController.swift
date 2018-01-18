@@ -39,7 +39,7 @@ class SelfieDetailViewController: UIViewController {
     /// updates the selfie with the store
     @IBAction func doneButtonTapped(_ sender: Any)
     {
-        self.selfieNameField.resignFirstResponder();
+        self.selfieNameField.resignFirstResponder()
         
         // Ensure that we have a selfie to work with
         guard let selfie = selfie else

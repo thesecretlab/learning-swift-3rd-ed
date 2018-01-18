@@ -84,7 +84,7 @@ swap2 // 2
 // END playground_func_inout
 
 // BEGIN playground_func_variables
-var numbersFunc: (Int, Int) -> Int;
+var numbersFunc: (Int, Int) -> Int
 // numbersFunc can now store any function that takes two ints and returns an int
 // Using the 'addNumbers' function from before
 numbersFunc = addNumbers

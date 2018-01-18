@@ -21,7 +21,7 @@ class Vehicle {
 // END playground_object_template
 
 // BEGIN playground_object_instance_basic
-var redVehicle = Vehicle()
+let redVehicle = Vehicle()
 redVehicle.colour = "Red"
 redVehicle.maxSpeed = 90
 redVehicle.travel() // prints "Traveling at 90 kph"
@@ -73,7 +73,7 @@ example = InitAndDeinitExample(text: "Hello")
 // END playground_object_init_basic
 
 // BEGIN playground_object_failable_2
-var failableExample = InitAndDeinitExample.init(value: 6) // nil
+var failableExample = InitAndDeinitExample(value: 6) // nil
 // END playground_object_failable_2
 
 // BEGIN playground_object_properties_access
