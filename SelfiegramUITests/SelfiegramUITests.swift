@@ -24,11 +24,9 @@ class SelfiegramUITests: XCTestCase {
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
         
-        // BEGIN snapshot_setup
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launch()
-        // END snapshot_setup
     }
     
     override func tearDown() {
@@ -79,22 +77,14 @@ class SelfiegramUITests: XCTestCase {
         XCTAssertEqual(currentSelfieCount + 1, tables.cells.count)
     }
     
-    // BEGIN snapshot_handler_methods
     func testScreenshots() {
         
-        // BEGIN snapshot_handler_methods_code
         let app = XCUIApplication()
-        // BEGIN snapshot_handler_methods_code_snapshot
         snapshot("MainApp")
-        // END snapshot_handler_methods_code_snapshot
         
         app.navigationBars["Photos"].buttons["Settings"].tap()
-        // BEGIN snapshot_handler_methods_code_snapshot
         snapshot("Settings")
-        // END snapshot_handler_methods_code_snapshot
         
         app.navigationBars.buttons["Photos"].tap()
-        // END snapshot_handler_methods_code
     }
-    // END snapshot_handler_methods
 }
